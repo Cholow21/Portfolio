@@ -6,17 +6,16 @@ export default function Header() {
     "Home",
     "About",
     "Skills",
-    "Education",
-    "Work",
+    "Projects",
     "Experience",
     "Contact",
   ];
 
   return (
-    <header className="header">
+    <header className= "header">
       <div className="logo">
         <img src={wolfLogo} alt="Logo" className="logo-img" />
-        <span className="logo-text">Cholo Clemente</span> {"Cholo Clemente"}
+        <span className="logo-text">Cholo Clemente</span> {}
       </div>
       <nav>
         <ul className="nav-list">

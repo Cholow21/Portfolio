@@ -1,14 +1,30 @@
 .about {
   padding: 50px 20px;
   text-align: center;
+  max-width: 800px;
+  margin: 50px auto;
+  background: #ffffff;
+  color: #0f4875;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+
+.about:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .about h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 20px;
+  color: #0f4875;
 }
 
 .about p {
-  font-size: 1rem;
-  color: #ffffff;
+  font-size: 1.1rem;
+  color: #0f4875;
+  line-height: 1.6;
 }

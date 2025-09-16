@@ -5,7 +5,7 @@ export default function About() {
     <section className="about">
       <h1>Hello! I'm Cholo Clemente!</h1>
       <p>
-        tamad ako pero wala tamad talaga pre eh
+        A 4th-year BSIT student eager to learn and grow through hands-on experience,<br></br> continuously improving skills while adapting to new challenges in the field of IT.
       </p>
     </section>
   );
