@@ -7,6 +7,8 @@ import Skills from "./components/Skills/skills";
 import TechFeed from "./components/Techfeed/TechFeed";
 import Home from "./components/Home/home";
 
+
+
 export default function App() {
   return (
     <div className="bg-[#0F4875] min-h-screen text-white">
@@ -16,6 +18,7 @@ export default function App() {
       <Skills />
       <TechFeed />
       <Contact />
+      
     </div>
   );
 }
