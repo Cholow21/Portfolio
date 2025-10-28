@@ -4,6 +4,8 @@ import Header from "./components/Header/header";
 import Contact from "./components/Contact/contact";
 import About from "./components/About/about";
 import { skillsData, SkillPill } from "./components/Skills/skills";
+import TechFeed from "./components/Techfeed/TechFeed";
+
 
 export default function App() {
   return (
@@ -12,7 +14,7 @@ export default function App() {
       <About />
       <section className="py-2 px-5 hover:scale-105 transform transition-transform duration-300 text-center">
         <div className="bg-white text-blue-900 rounded-xl shadow-lg p-10 max-w-4xl mx-auto">
-          <h1 className="text-4xl text-[#0F4875] font-bold mb-8">Tech Stack</h1>
+          <h1 className="text-4xl text-[#0F4875] font-bold mb-8">Skills</h1>
           <div className="space-y-10">
             {Object.entries(skillsData).map(([category, skills]) => (
               <div key={category}>
@@ -25,8 +27,11 @@ export default function App() {
               </div>
             ))}
           </div>
+               
+
         </div>
       </section>
+       <TechFeed />
       <Contact />
     </div>
   );
