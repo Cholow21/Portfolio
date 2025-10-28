@@ -49,14 +49,21 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: #0a3d62; 
-  color: #fff;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: white;
+  line-height: 1.6;
 
-  
+ 
+  background: linear-gradient(135deg, #0F4875 0%, #0a2e50 50%, #0F4875 100%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  overflow-x: hidden;
 }
 
 .main-content {
   text-align: center;
   padding: 100px 20px;
 }
+
