@@ -1,7 +1,7 @@
 import React from "react";
 
 export const skillsData = {
-  Frontend: ["JavaScript", "React", "Tailwind CSS", "Vite"],
+  Frontend: ["JavaScript", "React", "Tailwind", "CSS", "Vite"],
   Backend: ["Node.js", "Java", "MySQL", "HTML"],
   "Developer Tools": ["Git", "GitHub", "VSCode", "Discord", "Trello", "Teams"],
   "No Code": ["Figma"],

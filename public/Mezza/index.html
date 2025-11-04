@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mezza Residences - Luxury Living in the Heart of the City</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://smdc.com/content/webp-express/webp-images/doc-root/content/uploads/2020/04/image-180-3.png.webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #ffd700;
+            color: #1a1a1a;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #ffed4a;
+        }
+
+        .features, .units {
+            padding: 5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2, .units h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: #f0f0f0;
+        }
+
+        .feature-card h3 {
+            margin: 1rem 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .units-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
+            gap: 2rem;
+            padding: 0 1rem;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .unit-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .unit-content {
+            padding: 1.5rem;
+        }
+
+        .unit-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .unit-size {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .unit-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .unit-features li {
+            margin-bottom: 0.5rem;
+            color: #444;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .unit-features li:before {
+            content: "•";
+            color: #ffd700;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .unit-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-top: 1rem;
+        }
+
+        .unit-details-panel {
+            display: none;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .unit-details-panel.active {
+            display: block;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .unit-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .unit-gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .detail-section {
+            background: #f8f8f8;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .price-section {
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .amenity-details-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .amenity-content {
+            background: white;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .amenity-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .amenity-gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .amenity-description {
+            margin: 2rem 0;
+            line-height: 1.8;
+        }
+
+        .amenity-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .amenity-feature {
+            background: #f8f8f8;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .units-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        .contact {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .contact h2 {
+            color: #ffd700;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .contact-form {
+            margin-top: 2rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            background: #ffd700;
+            color: #1a1a1a;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        footer {
+            padding: 1rem;
+            text-align: center;
+            background: #1a1a1a;
+            color: white;
+        }
+    </style>
+    <script>
+        const showUnitDetails = unitType => {
+            document.querySelector('.units-grid').style.display = 'none';
+            document.querySelector('.units h2').style.display = 'none';
+            document.querySelectorAll('.unit-details-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(unitType + '-panel').classList.add('active');
+        };
+
+        const hideUnitDetails = () => {
+            document.querySelector('.units-grid').style.display = 'grid';
+            document.querySelector('.units h2').style.display = 'block';
+            document.querySelectorAll('.unit-details-panel').forEach(panel => panel.classList.remove('active'));
+        };
+
+        const showAmenityDetails = amenityType => {
+            const panel = document.getElementById(amenityType + '-amenity-panel');
+            if (panel) { panel.style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        };
+
+        const hideAmenityDetails = amenityType => {
+            const panel = document.getElementById(amenityType + '-amenity-panel');
+            if (panel) { panel.style.display = 'none'; document.body.style.overflow = 'auto'; }
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Mezza Residences</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#units">Available Units</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to Mezza Residences</h1>
+            <p>Found at the corner of Aurora Boulevard and Araneta Avenue and near SM City Sta. Mesa, <br>
+                SMDC Mezza Residences proves to be one of the most conveniently-placed condominium complexes 
+                where residents can enjoy great shopping and dining choices.
+
+            </p>
+            <a href="#contact" class="cta-button">Schedule a Viewing</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2>Premium Amenities</h2>
+        <div class="features-grid">
+            <div class="feature-card" onclick="showAmenityDetails('security')"><h3>24/7 Security</h3><p>Round-the-clock security personnel and CCTV surveillance for your peace of mind.</p></div>
+            <div class="feature-card" onclick="showAmenityDetails('pool')"><h3>Swimming Pool</h3><p>Temperature-controlled infinity pool with stunning city views.</p></div>
+            <div class="feature-card" onclick="showAmenityDetails('gym')"><h3>Fitness Center</h3><p>State-of-the-art gym equipment and dedicated yoga space.</p></div>
+            <div class="feature-card" onclick="showAmenityDetails('lounge')"><h3>Sky Lounge</h3><p>Exclusive residents' lounge perfect for socializing and relaxation.</p></div>
+        </div>
+
+        <div id="security-amenity-panel" class="amenity-details-panel">
+            <div class="amenity-content">
+                <button class="close-button" onclick="hideAmenityDetails('security')">×</button>
+                <h2>24/7 Security Services</h2>
+                <div class="amenity-gallery">
+                    <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Security Reception">
+                    <img src="https://images.unsplash.com/photo-1577962146641-c4dacf36eaa2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Security Access Control">
+                </div>
+                <div class="amenity-description">
+                    <p>At Mezza Residences, your safety is our utmost priority. Our multi-layered security system combines professional security personnel, advanced surveillance technology, and strict access control protocols.</p>
+                </div>
+                <div class="amenity-features">
+                    <div class="amenity-feature"><h4>Professional Security Team</h4><p>Licensed security personnel with residential property expertise</p></div>
+                    <div class="amenity-feature"><h4>Access Management System</h4><p>Multi-factor authentication system with RFID cards and biometric scanning</p></div>
+                    <div class="amenity-feature"><h4>Surveillance Network</h4><p>High-definition CCTV cameras with night vision capability</p></div>
+                    <div class="amenity-feature"><h4>Visitor Management</h4><p>Computerized visitor registration system with real-time notifications</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pool-amenity-panel" class="amenity-details-panel">
+            <div class="amenity-content">
+                <button class="close-button" onclick="hideAmenityDetails('pool')">×</button>
+                <h2>Infinity Swimming Pool</h2>
+                <div class="amenity-gallery">
+                    <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Infinity Pool">
+                    <img src="https://images.unsplash.com/photo-1623718649591-311775a30c43?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pool Lounging Area">
+                </div>
+                <div class="amenity-features">
+                    <div class="amenity-feature"><h4>Temperature Control</h4><p>Year-round comfortable swimming</p></div>
+                    <div class="amenity-feature"><h4>Infinity Edge</h4><p>Seamless views of the city skyline</p></div>
+                    <div class="amenity-feature"><h4>Pool Deck</h4><p>Premium loungers and umbrellas</p></div>
+                    <div class="amenity-feature"><h4>Safety Features</h4><p>Trained lifeguard during operating hours</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="gym-amenity-panel" class="amenity-details-panel">
+            <div class="amenity-content">
+                <button class="close-button" onclick="hideAmenityDetails('gym')">×</button>
+                <h2>State-of-the-art Fitness Center</h2>
+                <div class="amenity-gallery">
+                    <img src="https://images.unsplash.com/photo-1593079831268-3381b0db4a77?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Modern Gym Equipment">
+                    <img src="https://images.unsplash.com/photo-1600618528240-fb9fc964b853?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Yoga Studio">
+                </div>
+                <div class="amenity-features">
+                    <div class="amenity-feature"><h4>Premium Equipment</h4><p>Latest cardio and strength training machines</p></div>
+                    <div class="amenity-feature"><h4>Yoga Studio</h4><p>Dedicated space for yoga and stretching</p></div>
+                    <div class="amenity-feature"><h4>Personal Training</h4><p>Professional trainers available</p></div>
+                    <div class="amenity-feature"><h4>24/7 Access</h4><p>Round-the-clock access for residents</p></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lounge-amenity-panel" class="amenity-details-panel">
+            <div class="amenity-content">
+                <button class="close-button" onclick="hideAmenityDetails('lounge')">×</button>
+                <h2>Exclusive Sky Lounge</h2>
+                <div class="amenity-gallery">
+                    <img src="https://images.unsplash.com/photo-1629371997433-d11e6161a8b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Sky Lounge Interior">
+                    <img src="https://images.unsplash.com/photo-1606744888344-493238951221?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Lounge City View">
+                </div>
+                <div class="amenity-features">
+                    <div class="amenity-feature"><h4>Panoramic Views</h4><p>Floor-to-ceiling windows with city views</p></div>
+                    <div class="amenity-feature"><h4>Coffee Bar</h4><p>Complimentary coffee and tea service</p></div>
+                    <div class="amenity-feature"><h4>Business Center</h4><p>Work stations with high-speed internet</p></div>
+                    <div class="amenity-feature"><h4>Event Space</h4><p>Available for private functions</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="units" id="units">
+        <h2>Available Units</h2>
+        <div class="units-grid">
+            <div class="unit-card" onclick="showUnitDetails('studio')">
+                <div class="unit-image" style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="unit-content"><h3>Studio Unit</h3><p class="unit-size">24-28 sqm</p><p class="unit-price">Starting at ₱3.5M</p></div>
+            </div>
+            <div class="unit-card" onclick="showUnitDetails('one-bedroom')">
+                <div class="unit-image" style="background-image: url('https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="unit-content"><h3>One Bedroom</h3><p class="unit-size">36-42 sqm</p><p class="unit-price">Starting at ₱5.2M</p></div>
+            </div>
+            <div class="unit-card" onclick="showUnitDetails('two-bedroom')">
+                <div class="unit-image" style="background-image: url('https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="unit-content"><h3>Two Bedroom</h3><p class="unit-size">54-60 sqm</p><p class="unit-price">Starting at ₱7.8M</p></div>
+            </div>
+            <div class="unit-card" onclick="showUnitDetails('three-bedroom')">
+                <div class="unit-image" style="background-image: url('https://images.unsplash.com/photo-1600607686527-6fb886090705?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="unit-content"><h3>Three Bedroom</h3><p class="unit-size">86-92 sqm</p><p class="unit-price">Starting at ₱12.5M</p></div>
+            </div>
+            <div class="unit-card" onclick="showUnitDetails('penthouse')">
+                <div class="unit-image" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="unit-content"><h3>Penthouse Suite</h3><p class="unit-size">180-200 sqm</p><p class="unit-price">Starting at ₱25M</p></div>
+            </div>
+        </div>
+
+        
+        <div id="studio-panel" class="unit-details-panel">
+            <a class="back-button" onclick="hideUnitDetails()">← Back to Units</a>
+            <h1>Studio Unit</h1>
+            
+            <div class="unit-gallery">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Studio Living Area">
+                <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Studio Kitchen">
+            </div>
+
+            <div class="detail-section">
+                <h2>Unit Details</h2>
+                <p>Floor Area: 24-28 sqm</p>
+                <h3>Features:</h3>
+                <ul class="features-list">
+                    <li>Modern open-plan layout maximizing space efficiency</li>
+                    <li>Built-in wardrobe with smart storage solutions</li>
+                    <li>Contemporary kitchenette with modern appliances</li>
+                    <li>Full bathroom with premium fixtures</li>
+                    <li>Large windows providing natural lighting</li>
+                    <li>Pre-installed air conditioning</li>
+                    <li>High-speed internet ready</li>
+                    <li>Quality tile flooring</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <h2>Pricing Information</h2>
+                <p>Starting at ₱3.5M</p>
+                <p>Flexible payment terms available</p>
+                <p>Reserve now with just ₱50,000</p>
+                <a href="#contact" class="cta-button">Schedule a Viewing</a>
+            </div>
+        </div>
+
+        
+        <div id="one-bedroom-panel" class="unit-details-panel">
+            <a class="back-button" onclick="hideUnitDetails()">← Back to Units</a>
+            <h1>One Bedroom Unit</h1>
+            
+            <div class="unit-gallery">
+                <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Living Room">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bedroom">
+            </div>
+
+            <div class="detail-section">
+                <h2>Unit Details</h2>
+                <p>Floor Area: 36-42 sqm</p>
+                <h3>Features:</h3>
+                <ul class="features-list">
+                    <li>Separate bedroom with en-suite bathroom</li>
+                    <li>Spacious living and dining area</li>
+                    <li>Modern kitchen with built-in cabinets</li>
+                    <li>Built-in closet in bedroom</li>
+                    <li>Balcony with city views (select units)</li>
+                    <li>Pre-installed air conditioning</li>
+                    <li>High-speed internet ready</li>
+                    <li>Premium tile flooring</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <h2>Pricing Information</h2>
+                <p>Starting at ₱5.2M</p>
+                <p>Flexible payment terms available</p>
+                <p>Reserve now with just ₱75,000</p>
+                <a href="#contact" class="cta-button">Schedule a Viewing</a>
+            </div>
+        </div>
+
+        
+        <div id="two-bedroom-panel" class="unit-details-panel">
+            <a class="back-button" onclick="hideUnitDetails()">← Back to Units</a>
+            <h1>Two Bedroom Unit</h1>
+            
+            <div class="unit-gallery">
+                <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Living Room">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Master Bedroom">
+            </div>
+
+            <div class="detail-section">
+                <h2>Unit Details</h2>
+                <p>Floor Area: 54-60 sqm</p>
+                <h3>Features:</h3>
+                <ul class="features-list">
+                    <li>Master bedroom with en-suite bathroom</li>
+                    <li>Secondary bedroom perfect for family or home office</li>
+                    <li>Spacious living and dining area</li>
+                    <li>Full kitchen with breakfast bar</li>
+                    <li>Large balcony with panoramic city views</li>
+                    <li>Built-in wardrobes in both bedrooms</li>
+                    <li>Premium appliances included</li>
+                    <li>Luxury tile and wood flooring</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <h2>Pricing Information</h2>
+                <p>Starting at ₱7.8M</p>
+                <p>Flexible payment terms available</p>
+                <p>Reserve now with just ₱100,000</p>
+                <a href="#contact" class="cta-button">Schedule a Viewing</a>
+            </div>
+        </div>
+
+       
+        <div id="three-bedroom-panel" class="unit-details-panel">
+            <a class="back-button" onclick="hideUnitDetails()">← Back to Units</a>
+            <h1>Three Bedroom Unit</h1>
+            
+            <div class="unit-gallery">
+                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Living Room">
+                <img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Master Bedroom">
+            </div>
+
+            <div class="detail-section">
+                <h2>Unit Details</h2>
+                <p>Floor Area: 86-92 sqm</p>
+                <h3>Features:</h3>
+                <ul class="features-list">
+                    <li>Master bedroom with en-suite and walk-in closet</li>
+                    <li>Two well-appointed secondary bedrooms</li>
+                    <li>Separate formal living and dining spaces</li>
+                    <li>Modern kitchen with center island</li>
+                    <li>Two strategically placed balconies</li>
+                    <li>Maid's room with bathroom</li>
+                    <li>Powder room for guests</li>
+                    <li>Premium flooring and fixtures</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <h2>Pricing Information</h2>
+                <p>Starting at ₱12.5M</p>
+                <p>Flexible payment terms available</p>
+                <p>Reserve now with just ₱150,000</p>
+                <a href="#contact" class="cta-button">Schedule a Viewing</a>
+            </div>
+        </div>
+
+       
+        <div id="penthouse-panel" class="unit-details-panel">
+            <a class="back-button" onclick="hideUnitDetails()">← Back to Units</a>
+            <h1>Penthouse Suite</h1>
+            
+            <div class="unit-gallery">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Living Room">
+                <img src="https://images.unsplash.com/photo-1600573472591-ee9f13d59d3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Master Bedroom">
+            </div>
+
+            <div class="detail-section">
+                <h2>Unit Details</h2>
+                <p>Floor Area: 180-200 sqm</p>
+                <h3>Features:</h3>
+                <ul class="features-list">
+                    <li>Luxurious master suite with panoramic views</li>
+                    <li>Two additional en-suite bedrooms</li>
+                    <li>Private roof deck with entertainment area</li>
+                    <li>Gourmet kitchen with premium appliances</li>
+                    <li>Formal living and dining areas</li>
+                    <li>Home office/library space</li>
+                    <li>Staff quarters with separate entrance</li>
+                    <li>Smart home automation system</li>
+                    <li>Wine cellar</li>
+                    <li>Premium imported finishes throughout</li>
+                </ul>
+            </div>
+
+            <div class="price-section">
+                <h2>Pricing Information</h2>
+                <p>Starting at ₱25M</p>
+                <p>Customization options available</p>
+                <p>Reserve now with just ₱500,000</p>
+                <a href="#contact" class="cta-button">Schedule a Viewing</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="contact-container">
+            <h2>Contact Us</h2>
+            <div class="contact-info">
+                <p> 123 Main Street, Metro Manila</p>
+                <p> (02) 8123-4567</p>
+                <p> info@mezzaresidences.com</p>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Mezza Residences. All rights reserved.</p>
+    </footer>
+</body>
+</html>

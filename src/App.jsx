@@ -6,7 +6,8 @@ import About from "./components/About/about";
 import Skills from "./components/Skills/skills";
 import TechFeed from "./components/Techfeed/TechFeed";
 import Home from "./components/Home/home";
-
+import Projects from "./components/Projects/projects";
+import Beyond from "./components/Beyond/beyond";
 
 
 export default function App() {
@@ -17,8 +18,14 @@ export default function App() {
       <About />
       <Skills />
       <TechFeed />
-      <Contact />
       
+    <section className="flex flex-col lg:flex-row gap-6 px-6 py-16">
+      <Beyond />
+      <Projects />
+    </section>
+ 
+      <Contact />
+
     </div>
   );
 }
