@@ -73,10 +73,7 @@ export default function Login({ onLogin, onClose }) {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
-          <p>Demo credentials:</p>
-          <p className="font-mono">Username: admin | Password: admin123</p>
-        </div>
+        
       </div>
     </div>
   );
