@@ -60,7 +60,7 @@ export default function AdminPanel({
       alert("✅ Changes saved successfully!\n\nNote: If Firebase is not configured, data is saved locally.");
     } catch (error) {
       console.error('Save error:', error);
-      alert(`⚠️ Changes saved locally but Firebase sync may have failed.\n\nYour changes are still saved in the browser.`);
+      alert(`Changes saved locally but Firebase sync may have failed.\n\nYour changes are still saved in the browser.`);
     } finally {
       setIsSaving(false);
     }
@@ -74,9 +74,6 @@ export default function AdminPanel({
       <header className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
         <div className="flex justify-between items-center px-6 sm:px-12 py-4 max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <span className="text-black text-xl">✏️</span>
-            </div>
             <div>
               <h1 className="text-xl font-bold text-white">Admin Panel</h1>
               <p className="text-xs text-gray-400">Edit Mode - All changes are live</p>
@@ -88,13 +85,13 @@ export default function AdminPanel({
               disabled={isSaving}
               className="px-6 py-2 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSaving ? '⏳ Saving...' : '💾 Save All Changes'}
+              {isSaving ? 'Saving...' : 'Save All Changes'}
             </button>
             <button
               onClick={onClose}
               className="px-6 py-2 bg-white/10 text-white font-semibold rounded-md hover:bg-white/20 transition-all duration-300 border border-white/20"
             >
-              ✕ Exit
+              Exit
             </button>
           </div>
         </div>
@@ -103,8 +100,8 @@ export default function AdminPanel({
       <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
         {/* Personal Info Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span>👤</span> Personal Information
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Personal Information
           </h2>
           
           {/* Profile Image Upload */}
@@ -264,8 +261,8 @@ export default function AdminPanel({
 
         {/* About Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span>📝</span> About Me
+          <h2 className="text-2xl font-bold text-white mb-6">
+            About Me
           </h2>
           <div className="space-y-4">
             <div>
@@ -309,8 +306,8 @@ export default function AdminPanel({
 
         {/* Skills Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span>⚡</span> Skills & Technologies
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Skills & Technologies
           </h2>
           {Object.entries(formData.skills).map(([category, skills]) => (
             <div key={category} className="mb-6">
@@ -365,8 +362,8 @@ export default function AdminPanel({
         {/* Projects Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <span>💼</span> Projects
+            <h2 className="text-2xl font-bold text-white">
+              Projects
             </h2>
             <button
               onClick={() => setEditingProject({ id: Date.now(), name: "", description: "", type: "" })}
@@ -539,8 +536,8 @@ export default function AdminPanel({
         {/* Certifications Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <span>🎓</span> Certifications
+            <h2 className="text-2xl font-bold text-white">
+              Certifications
             </h2>
             <button
               onClick={() => {
@@ -630,8 +627,8 @@ export default function AdminPanel({
 
         {/* Contact Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span>📧</span> Contact Information
+          <h2 className="text-2xl font-bold text-white mb-6">
+            Contact Information
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>

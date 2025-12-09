@@ -28,7 +28,7 @@ export default function Login({ onLogin, onClose }) {
         
         <div className="text-center mb-6">
           <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl">🔐</span>
+            <span className="text-white text-2xl">!</span>
           </div>
           <h2 className="text-3xl font-bold mb-2">Login as Admin</h2>
           <p className="text-gray-600 text-sm">Access the admin panel to edit your portfolio</p>
