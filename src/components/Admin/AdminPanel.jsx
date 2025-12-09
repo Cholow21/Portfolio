@@ -9,6 +9,7 @@ export default function AdminPanel({
   const [formData, setFormData] = useState(portfolioData);
   const [editingProject, setEditingProject] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -52,12 +53,16 @@ export default function AdminPanel({
   };
 
   const handleSave = async () => {
+    setIsSaving(true);
     try {
+      console.log('Saving data:', formData);
       await onUpdateData(formData);
-      alert("Changes saved successfully to Firebase!");
+      alert("✅ Changes saved successfully to Firebase!");
     } catch (error) {
       console.error('Save error:', error);
-      alert("Failed to save changes. Please check your Firebase configuration and try again.");
+      alert(`❌ Failed to save changes: ${error.message}\n\nPlease check the browser console for details.`);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -80,9 +85,10 @@ export default function AdminPanel({
           <div className="flex gap-3">
             <button
               onClick={handleSave}
-              className="px-6 py-2 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-all duration-300"
+              disabled={isSaving}
+              className="px-6 py-2 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              💾 Save All Changes
+              {isSaving ? '⏳ Saving...' : '💾 Save All Changes'}
             </button>
             <button
               onClick={onClose}
