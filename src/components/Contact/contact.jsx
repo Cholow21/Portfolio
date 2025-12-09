@@ -50,7 +50,7 @@ export default function Contact({ data }) {
         {/* Footer bottom */}
         <div className="pt-6 sm:pt-8 border-t border-white/10">
           <p className="text-gray-500 text-xs sm:text-sm px-4">
-            © 2024 Marshal Cholo Clemente. Built with React
+            © 2025 Marshal Cholo Clemente. All rights reserved
           </p>
         </div>
       </div>
