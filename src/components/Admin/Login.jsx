@@ -8,7 +8,7 @@ export default function Login({ onLogin, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Simple authentication (in production, use proper backend authentication)
-    if (username === "admin" && password === "admin123") {
+    if (username === "admin" && password === "cholotheadmin") {
       onLogin();
       setError("");
     } else {
