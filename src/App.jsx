@@ -17,6 +17,10 @@ export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved === 'dark' : true; // Default to dark mode
+  });
 
   // Initial portfolio data
   const [portfolioData, setPortfolioData] = useState({
@@ -151,22 +155,33 @@ export default function App() {
     );
   }
 
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+  };
+
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
-      <Header name={portfolioData.personalInfo?.name} profileImage={portfolioData.personalInfo?.profileImage} />
-      <Home personalInfo={portfolioData.personalInfo} />
+    <div className={isDarkMode ? "bg-gradient-to-b from-gray-900 to-black min-h-screen text-white" : "bg-gradient-to-b from-gray-50 to-white min-h-screen text-gray-900"}>
+      <Header 
+        name={portfolioData.personalInfo?.name} 
+        profileImage={portfolioData.personalInfo?.profileImage}
+        isDarkMode={isDarkMode}
+        onToggleTheme={toggleTheme}
+      />
+      <Home personalInfo={portfolioData.personalInfo} isDarkMode={isDarkMode} />
       <About data={portfolioData.about} />
       <Skills data={portfolioData.skills} />
-      <TechFeed />
+      <TechFeed isDarkMode={isDarkMode} />
       
       <section id="projects" className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 py-12 sm:py-16 lg:py-20 max-w-7xl mx-auto">
-        <Beyond />
-        <Projects data={portfolioData.projects} />
+        <Beyond isDarkMode={isDarkMode} />
+        <Projects data={portfolioData.projects} isDarkMode={isDarkMode} />
       </section>
 
-      <Certifications data={portfolioData.certifications} />
+      <Certifications data={portfolioData.certifications} isDarkMode={isDarkMode} />
  
-      <Contact data={portfolioData.contact} />
+      <Contact data={portfolioData.contact} isDarkMode={isDarkMode} />
 
       {showLogin && !isAuthenticated && <Login onLogin={handleLogin} onClose={() => setShowLogin(false)} />}
       {showAdminPanel && isAuthenticated && (
