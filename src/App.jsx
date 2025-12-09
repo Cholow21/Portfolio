@@ -11,6 +11,7 @@ import Beyond from "./components/Beyond/beyond";
 import Certifications from "./components/Certifications/Certifications";
 import Login from "./components/Admin/Login";
 import AdminPanel from "./components/Admin/AdminPanel";
+import { getPortfolioData, savePortfolioData } from "./firebase/portfolioService";
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -18,39 +19,56 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Initial portfolio data
-  const [portfolioData, setPortfolioData] = useState(() => {
-    const saved = localStorage.getItem('portfolioData');
-    return saved ? JSON.parse(saved) : {
-      personalInfo: {
-        name: "Marshal Cholo Clemente",
-        title: "4th-year BSIT Student",
-        birthday: "September 21, 2004",
-        age: "21"
-      },
-      about: {
-        paragraph1: "I'm a 4th-year BSIT student passionate about learning and growing through hands-on experience. I constantly strive to improve my skills and adapt to new challenges in the ever-evolving field of technology.",
-        paragraph2: "I have a strong curiosity for exploring new technologies and applications, especially those that push me to think creatively and critically. While I don't code every day, I can comfortably understand and read simple code, and I'm continuously working on becoming more confident in development.",
-        paragraph3: "Outside the world of coding, I'm an avid sports and gaming enthusiast. I enjoy activities that challenge my critical thinking and problem-solving skills — even when they can be tough — because I love the sense of achievement that comes with overcoming challenges."
-      },
-      skills: {
-        Frontend: ["JavaScript", "React", "Tailwind", "CSS", "Vite"],
-        Backend: ["Node.js", "Java", "MySQL", "HTML"],
-        "Developer Tools": ["Git", "GitHub", "VSCode", "Discord", "Trello", "Teams"],
-        "No Code": ["Figma"]
-      },
-      projects: [
-        { id: 1, name: "Cherry Tomato", description: "Pomodoro Productivity App", type: "Mobile Application" },
-        { id: 2, name: "Mezza Residences", description: "Real Estate Website", type: "Website" }
-      ],
-      contact: {
-        email: "choloclemente21@gmail.com",
-        phone: "+63 968 462 9407",
-        instagram: "@choloclm",
-        facebook: "Cholo Clemente",
-        address: "Malolos Bulacan"
+  const [portfolioData, setPortfolioData] = useState({
+    personalInfo: {
+      name: "Marshal Cholo Clemente",
+      title: "4th-year BSIT Student",
+      birthday: "September 21, 2004",
+      age: "21"
+    },
+    about: {
+      paragraph1: "I'm a 4th-year BSIT student passionate about learning and growing through hands-on experience. I constantly strive to improve my skills and adapt to new challenges in the ever-evolving field of technology.",
+      paragraph2: "I have a strong curiosity for exploring new technologies and applications, especially those that push me to think creatively and critically. While I don't code every day, I can comfortably understand and read simple code, and I'm continuously working on becoming more confident in development.",
+      paragraph3: "Outside the world of coding, I'm an avid sports and gaming enthusiast. I enjoy activities that challenge my critical thinking and problem-solving skills — even when they can be tough — because I love the sense of achievement that comes with overcoming challenges."
+    },
+    skills: {
+      Frontend: ["JavaScript", "React", "Tailwind", "CSS", "Vite"],
+      Backend: ["Node.js", "Java", "MySQL", "HTML"],
+      "Developer Tools": ["Git", "GitHub", "VSCode", "Discord", "Trello", "Teams"],
+      "No Code": ["Figma"]
+    },
+    projects: [
+      { id: 1, name: "Cherry Tomato", description: "Pomodoro Productivity App", type: "Mobile Application" },
+      { id: 2, name: "Mezza Residences", description: "Real Estate Website", type: "Website" }
+    ],
+    contact: {
+      email: "choloclemente21@gmail.com",
+      phone: "+63 968 462 9407",
+      instagram: "@choloclm",
+      facebook: "Cholo Clemente",
+      address: "Malolos Bulacan"
+    }
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load data from Firebase on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await getPortfolioData();
+        if (data) {
+          setPortfolioData(data);
+        }
+      } catch (error) {
+        console.error('Error loading portfolio data:', error);
+        // Use default data if Firebase fails
+      } finally {
+        setIsLoading(false);
       }
     };
-  });
+    loadData();
+  }, []);
 
   useEffect(() => {
     const handleOpenLogin = () => setShowLogin(true);
@@ -64,15 +82,37 @@ export default function App() {
     setShowAdminPanel(true);
   };
 
-  const handleUpdateData = (newData) => {
-    setPortfolioData(newData);
-    localStorage.setItem('portfolioData', JSON.stringify(newData));
+  const handleUpdateData = async (newData) => {
+    try {
+      // Save to Firebase
+      await savePortfolioData(newData);
+      // Update local state
+      setPortfolioData(newData);
+      // Also save to localStorage as backup
+      localStorage.setItem('portfolioData', JSON.stringify(newData));
+      console.log('Portfolio data saved successfully to Firebase');
+    } catch (error) {
+      console.error('Error saving portfolio data:', error);
+      alert('Failed to save changes to Firebase. Please try again.');
+      throw error;
+    }
   };
 
   const handleCloseAdminPanel = () => {
     setShowAdminPanel(false);
     setIsAuthenticated(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">

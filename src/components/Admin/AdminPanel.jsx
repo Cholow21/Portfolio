@@ -51,9 +51,14 @@ export default function AdminPanel({
     });
   };
 
-  const handleSave = () => {
-    onUpdateData(formData);
-    alert("Changes saved successfully!");
+  const handleSave = async () => {
+    try {
+      await onUpdateData(formData);
+      alert("Changes saved successfully to Firebase!");
+    } catch (error) {
+      console.error('Save error:', error);
+      alert("Failed to save changes. Please check your Firebase configuration and try again.");
+    }
   };
 
   if (!isOpen) return null;

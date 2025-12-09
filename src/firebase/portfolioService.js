@@ -38,33 +38,45 @@ export const getPortfolioData = async () => {
 // Save portfolio data to Firestore
 export const savePortfolioData = async (data) => {
   try {
+    // Create a copy to avoid mutating original data
+    const dataCopy = JSON.parse(JSON.stringify(data));
+
     // Upload profile image if it's base64
-    if (data.personalInfo?.profileImage && data.personalInfo.profileImage.startsWith('data:')) {
-      const imageUrl = await uploadImage(
-        data.personalInfo.profileImage,
-        `profile/${Date.now()}.jpg`
-      );
-      data.personalInfo.profileImage = imageUrl;
+    if (dataCopy.personalInfo?.profileImage && dataCopy.personalInfo.profileImage.startsWith('data:')) {
+      try {
+        const imageUrl = await uploadImage(
+          dataCopy.personalInfo.profileImage,
+          `profile/${Date.now()}.jpg`
+        );
+        dataCopy.personalInfo.profileImage = imageUrl;
+      } catch (imgError) {
+        console.warn('Profile image upload failed, saving without it:', imgError);
+        // Remove base64 image to avoid document size limit
+        delete dataCopy.personalInfo.profileImage;
+      }
     }
 
     // Upload project images if they're base64
-    if (data.projects) {
-      for (let i = 0; i < data.projects.length; i++) {
-        if (data.projects[i].imageUrl && data.projects[i].imageUrl.startsWith('data:')) {
-          const imageUrl = await uploadImage(
-            data.projects[i].imageUrl,
-            `projects/${data.projects[i].id}_${Date.now()}.jpg`
-          );
-          data.projects[i].imageUrl = imageUrl;
+    if (dataCopy.projects) {
+      for (let i = 0; i < dataCopy.projects.length; i++) {
+        if (dataCopy.projects[i].imageUrl && dataCopy.projects[i].imageUrl.startsWith('data:')) {
+          try {
+            const imageUrl = await uploadImage(
+              dataCopy.projects[i].imageUrl,
+              `projects/${dataCopy.projects[i].id}_${Date.now()}.jpg`
+            );
+            dataCopy.projects[i].imageUrl = imageUrl;
+          } catch (imgError) {
+            console.warn(`Project image upload failed for ${dataCopy.projects[i].name}:`, imgError);
+            // Remove base64 image to avoid document size limit
+            delete dataCopy.projects[i].imageUrl;
+          }
         }
       }
     }
 
     const docRef = doc(db, 'portfolio', PORTFOLIO_DOC_ID);
-    await setDoc(docRef, {
-      ...data,
-      lastUpdated: new Date().toISOString()
-    });
+    await setDoc(docRef, dataCopy);
     return true;
   } catch (error) {
     console.error('Error saving portfolio data:', error);
