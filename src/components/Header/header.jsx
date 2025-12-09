@@ -1,7 +1,7 @@
 import "./header.css";
 import wolfLogo from "../../assets/wolf.jpg";
 
-export default function Header({ name = "Cholo Clemente" }) {
+export default function Header({ name = "Cholo Clemente", profileImage }) {
   const items = [
     { label: "Home", id: "home" },
     { label: "About", id: "about" },
@@ -26,9 +26,9 @@ export default function Header({ name = "Cholo Clemente" }) {
         <div className="flex items-center gap-3 group">
           <div className="relative">
             <img
-              src={wolfLogo}
+              src={profileImage || wolfLogo}
               alt="Logo"
-              className="w-12 h-12 rounded-full border-2 border-white/40 shadow-lg hover:scale-110 transition-all duration-300 hover:border-white"
+              className="w-12 h-12 rounded-full border-2 border-white/40 shadow-lg hover:scale-110 transition-all duration-300 hover:border-white object-cover"
             />
           </div>
           <span className="text-2xl font-bold text-white tracking-wide hover:text-gray-300 transition-colors duration-300">

@@ -95,6 +95,106 @@ export default function AdminPanel({
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
             <span>👤</span> Personal Information
           </h2>
+          
+          {/* Profile Image Upload */}
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Profile Image</label>
+            {formData.personalInfo?.profileImage ? (
+              <div className="flex items-center gap-4">
+                <img
+                  src={formData.personalInfo.profileImage}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full object-cover border-2 border-white/40"
+                />
+                <div className="flex-1 space-y-2">
+                  <label className="block">
+                    <span className="sr-only">Change profile image</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          if (!file.type.startsWith('image/')) {
+                            alert('Please select an image file');
+                            return;
+                          }
+                          if (file.size > 5 * 1024 * 1024) {
+                            alert('Image size should be less than 5MB');
+                            return;
+                          }
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setFormData({
+                              ...formData,
+                              personalInfo: { ...formData.personalInfo, profileImage: reader.result }
+                            });
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="block w-full text-sm text-gray-300
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-md file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-white/10 file:text-white
+                        hover:file:bg-white/20 file:cursor-pointer
+                        file:transition-all file:duration-300"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({
+                      ...formData,
+                      personalInfo: { ...formData.personalInfo, profileImage: null }
+                    })}
+                    className="px-4 py-2 bg-red-500/20 text-red-300 text-sm rounded-md hover:bg-red-500/30 border border-red-500/40 transition-all"
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/20 border-dashed rounded-lg cursor-pointer bg-white/5 hover:bg-white/10 transition-all">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg className="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p className="text-sm text-gray-300">
+                    <span className="font-semibold">Click to upload profile image</span>
+                  </p>
+                  <p className="text-xs text-gray-400">PNG, JPG up to 5MB</p>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      if (!file.type.startsWith('image/')) {
+                        alert('Please select an image file');
+                        return;
+                      }
+                      if (file.size > 5 * 1024 * 1024) {
+                        alert('Image size should be less than 5MB');
+                        return;
+                      }
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setFormData({
+                          ...formData,
+                          personalInfo: { ...formData.personalInfo, profileImage: reader.result }
+                        });
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-300 mb-2">Full Name</label>

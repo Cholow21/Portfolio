@@ -75,7 +75,7 @@ export default function App() {
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
-      <Header name={portfolioData.personalInfo?.name} />
+      <Header name={portfolioData.personalInfo?.name} profileImage={portfolioData.personalInfo?.profileImage} />
       <Home personalInfo={portfolioData.personalInfo} />
       <About data={portfolioData.about} />
       <Skills data={portfolioData.skills} />
