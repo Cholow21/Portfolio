@@ -10,16 +10,16 @@ import Projects from "./components/Projects/projects";
 import Beyond from "./components/Beyond/beyond";
 import Login from "./components/Admin/Login";
 import AdminPanel from "./components/Admin/AdminPanel";
+import { getPortfolioData, savePortfolioData } from "./firebase/portfolioService";
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Initial portfolio data
-  const [portfolioData, setPortfolioData] = useState(() => {
-    const saved = localStorage.getItem('portfolioData');
-    return saved ? JSON.parse(saved) : {
+  // Default portfolio data
+  const defaultData = {
       personalInfo: {
         name: "Marshal Cholo Clemente",
         title: "4th-year BSIT Student",
@@ -49,7 +49,35 @@ export default function App() {
         address: "Malolos Bulacan"
       }
     };
-  });
+
+  // Initial portfolio data state
+  const [portfolioData, setPortfolioData] = useState(defaultData);
+
+  // Load data from Firebase on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await getPortfolioData();
+        if (data) {
+          setPortfolioData(data);
+        } else {
+          // If no data in Firebase, use default and save it
+          await savePortfolioData(defaultData);
+        }
+      } catch (error) {
+        console.error('Error loading data:', error);
+        // Fallback to localStorage if Firebase fails
+        const saved = localStorage.getItem('portfolioData');
+        if (saved) {
+          setPortfolioData(JSON.parse(saved));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   useEffect(() => {
     const handleOpenLogin = () => setShowLogin(true);
@@ -63,15 +91,35 @@ export default function App() {
     setShowAdminPanel(true);
   };
 
-  const handleUpdateData = (newData) => {
-    setPortfolioData(newData);
-    localStorage.setItem('portfolioData', JSON.stringify(newData));
+  const handleUpdateData = async (newData) => {
+    try {
+      // Save to Firebase
+      await savePortfolioData(newData);
+      // Update local state
+      setPortfolioData(newData);
+      // Also save to localStorage as backup
+      localStorage.setItem('portfolioData', JSON.stringify(newData));
+    } catch (error) {
+      console.error('Error saving data:', error);
+      alert('Error saving changes. Please try again.');
+    }
   };
 
   const handleCloseAdminPanel = () => {
     setShowAdminPanel(false);
     setIsAuthenticated(false);
   };
+
+  if (loading) {
+    return (
+      <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-gray-400">Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
