@@ -3,8 +3,8 @@ import "./contact.css";
 export default function Contact({ data }) {
   const contactInfo = [
     { label: "Email", value: data.email, link: `mailto:${data.email}`, isClickable: true },
-    { label: "Instagram", value: data.instagram, link: `https://instagram.com/${data.instagram.replace('@', '')}`, isClickable: true },
-    { label: "Facebook", value: data.facebook, link: "https://facebook.com", isClickable: true },
+    { label: "Instagram", value: data.instagram, link: `https://www.instagram.com/tiyolow/')}`, isClickable: true },
+    { label: "Facebook", value: data.facebook, link: "https://www.facebook.com/Cholo.Clemente21", isClickable: true },
     { label: "Phone", value: data.phone, link: null, isClickable: false },
     { label: "Address", value: data.address, link: null, isClickable: false },
   ];
