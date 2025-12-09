@@ -62,10 +62,26 @@ export default function App() {
           setTimeout(() => reject(new Error('Load timeout')), 5000)
         );
         
-        const data = await Promise.race([loadPromise, timeoutPromise]);
-        if (data) {
-          setPortfolioData(data);
-          localStorage.setItem('portfolioData', JSON.stringify(data));
+        const firebaseData = await Promise.race([loadPromise, timeoutPromise]);
+        if (firebaseData) {
+          // Merge with localStorage to get any local-only data
+          const localData = localStorage.getItem('portfolioData');
+          if (localData) {
+            const parsed = JSON.parse(localData);
+            // Use Firebase data but keep local images if Firebase doesn't have them
+            const merged = {
+              ...firebaseData,
+              personalInfo: {
+                ...firebaseData.personalInfo,
+                profileImage: firebaseData.personalInfo?.profileImage || parsed.personalInfo?.profileImage
+              }
+            };
+            setPortfolioData(merged);
+            localStorage.setItem('portfolioData', JSON.stringify(merged));
+          } else {
+            setPortfolioData(firebaseData);
+            localStorage.setItem('portfolioData', JSON.stringify(firebaseData));
+          }
           console.log('✅ Loaded from Firebase');
         }
       } catch (error) {
