@@ -81,7 +81,7 @@ export default function App() {
       <Skills data={portfolioData.skills} />
       <TechFeed />
       
-      <section id="projects" className="flex flex-col lg:flex-row gap-8 px-6 py-20 max-w-7xl mx-auto">
+      <section id="projects" className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 py-12 sm:py-16 lg:py-20 max-w-7xl mx-auto">
         <Beyond />
         <Projects data={portfolioData.projects} />
       </section>

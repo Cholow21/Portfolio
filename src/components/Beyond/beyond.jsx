@@ -4,12 +4,12 @@ export default function Beyond() {
   return (
     <div className="group relative bg-white text-black p-8 sm:p-10 rounded-lg shadow-xl shadow-white/10 hover:shadow-2xl hover:shadow-white/20 w-full lg:w-1/2 transform hover:-translate-y-2 transition-all duration-500 border border-gray-200">
       <div className="relative z-10">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
           Beyond Coding
         </h2>
         
-        <div className="space-y-4">
-          <p className="text-base sm:text-lg leading-relaxed text-gray-700 hover:text-black transition-colors duration-300">
+        <div className="space-y-3 sm:space-y-4">
+          <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-gray-700 hover:text-black transition-colors duration-300">
             When I'm not writing code, I enjoy being outside doing side quests —
             whether it's <span className="font-semibold text-black">hiking, biking</span>, or just exploring new places.
           </p>

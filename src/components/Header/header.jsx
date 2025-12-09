@@ -22,23 +22,23 @@ export default function Header({ name = "Cholo Clemente", profileImage }) {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-2xl transition-all duration-300">
-      <div className="flex justify-between items-center px-6 sm:px-12 py-4 max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 group">
+      <div className="flex justify-between items-center px-4 sm:px-6 lg:px-12 py-3 sm:py-4 max-w-7xl mx-auto">
+        <div className="flex items-center gap-2 sm:gap-3 group">
           <div className="relative">
             <img
               src={profileImage || wolfLogo}
               alt="Logo"
-              className="w-12 h-12 rounded-full border-2 border-white/40 shadow-lg hover:scale-110 transition-all duration-300 hover:border-white object-cover"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-white/40 shadow-lg hover:scale-110 transition-all duration-300 hover:border-white object-cover"
             />
           </div>
-          <span className="text-2xl font-bold text-white tracking-wide hover:text-gray-300 transition-colors duration-300">
+          <span className="text-lg sm:text-xl lg:text-2xl font-bold text-white tracking-wide hover:text-gray-300 transition-colors duration-300 truncate max-w-[150px] sm:max-w-none">
             {name}
           </span>
         </div>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-8">
           <nav className="hidden md:block">
-            <ul className="flex gap-8 text-base text-white font-medium">
+            <ul className="flex gap-4 lg:gap-8 text-sm lg:text-base text-white font-medium">
               {items.map((item, index) => (
                 <li
                   key={index}
@@ -56,7 +56,7 @@ export default function Header({ name = "Cholo Clemente", profileImage }) {
           
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('openAdminLogin'))}
-            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-md border border-white/20 hover:border-white/40 transition-all duration-300 flex items-center gap-2"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-medium rounded-md border border-white/20 hover:border-white/40 transition-all duration-300 flex items-center gap-1 sm:gap-2 whitespace-nowrap"
           >
             <span>Login</span>
           </button>
