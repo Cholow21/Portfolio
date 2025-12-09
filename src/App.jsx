@@ -56,13 +56,28 @@ export default function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await getPortfolioData();
+        // Try Firebase first with timeout
+        const loadPromise = getPortfolioData();
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Load timeout')), 5000)
+        );
+        
+        const data = await Promise.race([loadPromise, timeoutPromise]);
         if (data) {
           setPortfolioData(data);
+          localStorage.setItem('portfolioData', JSON.stringify(data));
+          console.log('✅ Loaded from Firebase');
         }
       } catch (error) {
-        console.error('Error loading portfolio data:', error);
-        // Use default data if Firebase fails
+        console.warn('⚠️ Firebase load failed, trying localStorage:', error);
+        // Try localStorage as fallback
+        const saved = localStorage.getItem('portfolioData');
+        if (saved) {
+          setPortfolioData(JSON.parse(saved));
+          console.log('📦 Loaded from localStorage');
+        } else {
+          console.log('📝 Using default data');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -84,17 +99,23 @@ export default function App() {
 
   const handleUpdateData = async (newData) => {
     try {
-      // Save to Firebase
-      await savePortfolioData(newData);
-      // Update local state
+      // Update local state first
       setPortfolioData(newData);
-      // Also save to localStorage as backup
+      // Save to localStorage as backup
       localStorage.setItem('portfolioData', JSON.stringify(newData));
-      console.log('Portfolio data saved successfully to Firebase');
+      
+      // Try to save to Firebase with timeout
+      const savePromise = savePortfolioData(newData);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Save timeout - taking too long')), 10000)
+      );
+      
+      await Promise.race([savePromise, timeoutPromise]);
+      console.log('✅ Portfolio data saved successfully to Firebase');
     } catch (error) {
-      console.error('Error saving portfolio data:', error);
-      alert('Failed to save changes to Firebase. Please try again.');
-      throw error;
+      console.error('⚠️ Firebase save failed:', error);
+      // Data is still saved locally, so don't throw error
+      console.log('📦 Data saved to localStorage only');
     }
   };
 

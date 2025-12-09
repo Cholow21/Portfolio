@@ -57,10 +57,10 @@ export default function AdminPanel({
     try {
       console.log('Saving data:', formData);
       await onUpdateData(formData);
-      alert("✅ Changes saved successfully to Firebase!");
+      alert("✅ Changes saved successfully!\n\nNote: If Firebase is not configured, data is saved locally.");
     } catch (error) {
       console.error('Save error:', error);
-      alert(`❌ Failed to save changes: ${error.message}\n\nPlease check the browser console for details.`);
+      alert(`⚠️ Changes saved locally but Firebase sync may have failed.\n\nYour changes are still saved in the browser.`);
     } finally {
       setIsSaving(false);
     }
