@@ -7,7 +7,7 @@ export default function Header({ name = "Cholo Clemente", profileImage }) {
     { label: "About", id: "about" },
     { label: "Skills", id: "skills" },
     { label: "Projects", id: "projects" },
-    { label: "Experience", id: "experience" },
+    { label: "Certifications", id: "certifications" },
     { label: "Contact", id: "contact" },
   ];
 

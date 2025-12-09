@@ -8,6 +8,7 @@ import TechFeed from "./components/Techfeed/TechFeed";
 import Home from "./components/Home/home";
 import Projects from "./components/Projects/projects";
 import Beyond from "./components/Beyond/beyond";
+import Certifications from "./components/Certifications/Certifications";
 import Login from "./components/Admin/Login";
 import AdminPanel from "./components/Admin/AdminPanel";
 
@@ -85,6 +86,8 @@ export default function App() {
         <Beyond />
         <Projects data={portfolioData.projects} />
       </section>
+
+      <Certifications data={portfolioData.certifications} />
  
       <Contact data={portfolioData.contact} />
 

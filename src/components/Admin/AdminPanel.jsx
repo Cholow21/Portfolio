@@ -525,6 +525,98 @@ export default function AdminPanel({
           </div>
         </section>
 
+        {/* Certifications Section */}
+        <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+              <span>🎓</span> Certifications
+            </h2>
+            <button
+              onClick={() => {
+                const title = prompt("Certification title:");
+                if (title) {
+                  const subtitle = prompt("Certification subtitle/description:");
+                  const issuer = prompt("Issued by:");
+                  if (subtitle && issuer) {
+                    setFormData({
+                      ...formData,
+                      certifications: [
+                        ...(formData.certifications || []),
+                        { id: Date.now(), title, subtitle, issuer }
+                      ]
+                    });
+                  }
+                }
+              }}
+              className="px-4 py-2 bg-white text-black font-semibold rounded-md hover:bg-gray-200"
+            >
+              + Add Certification
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(formData.certifications && formData.certifications.length > 0) ? (
+              formData.certifications.map((cert) => (
+              <div
+                key={cert.id}
+                className="bg-white/10 border border-white/20 rounded-lg p-6 hover:bg-white/15 transition-all"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h4 className="font-bold text-white text-lg">{cert.title}</h4>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const title = prompt("Edit certification title:", cert.title);
+                        if (title !== null) {
+                          const subtitle = prompt("Edit subtitle/description:", cert.subtitle);
+                          if (subtitle !== null) {
+                            const issuer = prompt("Edit issuer:", cert.issuer);
+                            if (issuer !== null) {
+                              setFormData({
+                                ...formData,
+                                certifications: formData.certifications.map(c => 
+                                  c.id === cert.id 
+                                    ? { ...c, title: title || c.title, subtitle: subtitle || c.subtitle, issuer: issuer || c.issuer }
+                                    : c
+                                )
+                              });
+                            }
+                          }
+                        }
+                      }}
+                      className="text-blue-400 hover:text-blue-300 text-sm font-semibold px-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm("Delete this certification?")) {
+                          setFormData({
+                            ...formData,
+                            certifications: (formData.certifications || []).filter(c => c.id !== cert.id)
+                          });
+                        }
+                      }}
+                      className="text-red-400 hover:text-red-300 font-bold"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+                <p className="text-gray-400 text-sm mb-2">{cert.subtitle}</p>
+                <p className="text-gray-300 text-sm">
+                  <span className="font-semibold">Issued by:</span> {cert.issuer}
+                </p>
+              </div>
+            ))
+            ) : (
+              <div className="col-span-2 text-center py-8 text-gray-400">
+                <p>No certifications yet. Click "+ Add Certification" to add one.</p>
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section className="bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-8">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
