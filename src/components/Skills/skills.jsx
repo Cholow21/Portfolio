@@ -14,7 +14,7 @@ export default function Skills({ data }) {
           </span>
         </div>
 
-        <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-16">
+        <h2 ref={headingRef} className="reveal-left text-4xl sm:text-5xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-12 lg:mb-16">
           Tech<br />Stack
         </h2>
 

@@ -194,6 +194,8 @@ export default function App() {
           onClose={handleCloseAdminPanel}
           portfolioData={portfolioData}
           onUpdateData={handleUpdateData}
+          isDarkMode={isDarkMode}
+          onToggleTheme={toggleTheme}
         />
       )}
     </div>

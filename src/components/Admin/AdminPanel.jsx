@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-const inputClass = "w-full px-4 py-3 bg-transparent border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-white/60 transition-colors duration-200 placeholder-gray-600";
-const inputStyle = { background: "rgba(255,255,255,0.03)" };
-const labelClass = "block text-xs font-mono tracking-widest uppercase mb-2 text-gray-400";
-const sectionBorder = "border-t border-white/10";
+const inputClass = "w-full px-4 py-3 bg-transparent font-mono text-sm focus:outline-none transition-colors duration-200";
+const inputStyle = { border: "1px solid var(--border)", color: "var(--text)", background: "var(--pill-bg)" };
+const labelClass = "block text-xs font-mono tracking-widest uppercase mb-2 theme-muted";
+const sectionBorder = "border-t";
 
 function Section({ title, index, children, action }) {
   return (
-    <section className={`py-10 ${sectionBorder}`}>
+    <section className={`py-10 ${sectionBorder}`} style={{ borderColor: "var(--border)" }}>
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <div className="w-8 h-px bg-white/30" />
@@ -23,7 +23,7 @@ function Section({ title, index, children, action }) {
   );
 }
 
-export default function AdminPanel({ isOpen, onClose, portfolioData, onUpdateData }) {
+export default function AdminPanel({ isOpen, onClose, portfolioData, onUpdateData, isDarkMode = true, onToggleTheme }) {
   const [formData, setFormData] = useState(portfolioData);
   const [editingProject, setEditingProject] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -56,12 +56,12 @@ export default function AdminPanel({ isOpen, onClose, portfolioData, onUpdateDat
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 overflow-y-auto z-[100] bg-black text-white">
+    <div className={`fixed inset-0 overflow-y-auto z-[100]${!isDarkMode ? " light-mode" : ""}`} style={{ background: "var(--bg)", color: "var(--text)" }}>
       {/* Scanlines */}
       <div className="scanlines" />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.85)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "var(--bg)", borderBottom: "1px solid var(--border)" }}>
         <div className="flex justify-between items-center px-6 sm:px-12 py-4 max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
             <div className="w-8 h-px bg-white/30" />
@@ -72,7 +72,31 @@ export default function AdminPanel({ isOpen, onClose, portfolioData, onUpdateDat
               <p className="text-xs font-mono text-gray-600 mt-0.5">Edit Mode — All changes are live</p>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
+            {/* Theme toggle */}
+            <button
+              onClick={onToggleTheme}
+              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              className="w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+              style={{
+                background: isDarkMode ? "#1a1a1a" : "#fff",
+                border: isDarkMode ? "1px solid rgba(255,255,255,0.25)" : "1px solid rgba(0,0,0,0.15)",
+              }}
+            >
+              <svg
+                className={!isDarkMode ? "bulb-glow" : ""}
+                width="18" height="18" viewBox="0 0 24 24"
+                fill={!isDarkMode ? "#facc15" : "none"}
+                stroke={isDarkMode ? "#ffffff" : "#ca8a04"}
+                strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+              >
+                <path d="M9 21h6" />
+                <path d="M10 17h4" />
+                <path d="M12 3a6 6 0 0 1 6 6c0 2.22-1.2 4.16-3 5.2V16H9v-1.8A6.001 6.001 0 0 1 6 9a6 6 0 0 1 6-6z" />
+                {!isDarkMode && <line x1="12" y1="9" x2="12" y2="13" stroke="#ca8a04" strokeWidth="2" />}
+              </svg>
+            </button>
+
             <button
               onClick={handleSave}
               disabled={isSaving}

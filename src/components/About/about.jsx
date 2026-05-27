@@ -24,7 +24,7 @@ export default function About({ data }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
-            <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-8">
+            <h2 ref={headingRef} className="reveal-left text-4xl sm:text-5xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-8">
               About<br />Me
             </h2>
             <div ref={statsRef} className="reveal delay-200 grid grid-cols-3 gap-4 pt-8"

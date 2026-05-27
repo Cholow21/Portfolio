@@ -39,7 +39,7 @@ export default function Home({ personalInfo = {} }) {
           {name.split(" ").map((word, i) => (
             <div
               key={i}
-              className="glitch block text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tighter theme-text"
+              className="glitch block text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-black leading-none tracking-tighter theme-text"
               data-text={word}
             >
               {word}
@@ -47,28 +47,28 @@ export default function Home({ personalInfo = {} }) {
           ))}
         </div>
 
-        <div ref={subtitleRef} className="reveal delay-100 flex flex-wrap items-center gap-4 sm:gap-6 mb-12 pt-6"
+        <div ref={subtitleRef} className="reveal delay-100 flex flex-wrap items-center gap-3 sm:gap-6 mb-10 pt-5"
           style={{ borderTop: "1px solid var(--border)" }}>
-          <p className="text-sm sm:text-base font-mono tracking-wide uppercase theme-muted">{title}</p>
-          <span className="text-blue-500/60">✦</span>
-          <p className="text-sm sm:text-base font-mono tracking-wide uppercase theme-muted">Malolos, Bulacan</p>
+          <p className="text-xs sm:text-sm font-mono tracking-wide uppercase theme-muted">{title}</p>
+          <span className="text-blue-500/60 hidden sm:inline">✦</span>
+          <p className="text-xs sm:text-sm font-mono tracking-wide uppercase theme-muted">Malolos, Bulacan</p>
         </div>
 
-        <div ref={ctaRef} className="reveal delay-200 flex flex-wrap gap-4 items-center">
+        <div ref={ctaRef} className="reveal delay-200 flex flex-wrap gap-3 items-center">
           <a href="#projects"
-            className="group relative px-8 py-3 font-semibold text-sm tracking-widest uppercase border border-blue-500 text-blue-500 overflow-hidden transition-all duration-300 hover:text-white"
+            className="group relative px-6 sm:px-8 py-2.5 sm:py-3 font-semibold text-xs sm:text-sm tracking-widest uppercase border border-blue-500 text-blue-500 overflow-hidden transition-all duration-300 hover:text-white"
           >
             <span className="absolute inset-0 bg-blue-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <span className="relative">View Work</span>
           </a>
           <a href="#contact"
-            className="px-8 py-3 font-semibold text-sm tracking-widest uppercase theme-muted hover:text-blue-400 transition-colors duration-300"
+            className="px-6 sm:px-8 py-2.5 sm:py-3 font-semibold text-xs sm:text-sm tracking-widest uppercase theme-muted hover:text-blue-400 transition-colors duration-300"
           >
             Get In Touch →
           </a>
         </div>
 
-        {/* Info card */}
+        {/* Info card — desktop only */}
         <div className="group absolute bottom-16 right-0 hidden lg:block">
           <div className="text-xs font-mono theme-muted mb-2 text-right tracking-widest"></div>
           <div className="relative cursor-default">

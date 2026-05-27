@@ -17,7 +17,7 @@ export default function Beyond() {
         </div>
 
         <h2 ref={headingRef} className="reveal-left text-3xl sm:text-4xl font-black leading-tight tracking-tighter theme-text mb-8">
-          Life Outside<br />the Screen
+          Life Outside the Screen
         </h2>
 
         <div className="w-full h-px mb-8"

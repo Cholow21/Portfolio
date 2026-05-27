@@ -24,14 +24,14 @@ export default function Contact({ data }) {
           </span>
         </div>
 
-        <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-16">
+        <h2 ref={headingRef} className="reveal-left text-4xl sm:text-5xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-12 lg:mb-16">
           Let's<br />Connect
         </h2>
 
-        <div ref={listRef} className="reveal delay-100 mb-20">
+        <div ref={listRef} className="reveal delay-100 mb-16 sm:mb-20">
           {contactInfo.map((item, idx) => (
             <div key={idx}
-              className="group grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-pulse transition-all duration-300"
+              className="group grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-4 py-5 border-pulse transition-all duration-300"
               style={{ borderTop: "1px solid var(--border)" }}
             >
               <span className="text-xs font-mono tracking-widest uppercase theme-muted self-center">{item.label}</span>
