@@ -61,14 +61,25 @@ export const savePortfolioData = async (data) => {
     // Compress profile image if it's base64
     if (dataCopy.personalInfo?.profileImage && dataCopy.personalInfo.profileImage.startsWith('data:')) {
       try {
-        console.log('Compressing profile image...');
         const compressed = await compressImage(dataCopy.personalInfo.profileImage, 400, 0.6);
         dataCopy.personalInfo.profileImage = compressed;
-        console.log('Profile image compressed successfully');
       } catch (imgError) {
         console.warn('Profile image compression failed:', imgError);
-        // Keep original if compression fails
       }
+    }
+
+    // Compress profileImages array
+    if (dataCopy.personalInfo?.profileImages?.length > 0) {
+      const compressed = [];
+      for (const img of dataCopy.personalInfo.profileImages) {
+        if (img.startsWith('data:')) {
+          try { compressed.push(await compressImage(img, 400, 0.6)); }
+          catch { compressed.push(img); }
+        } else {
+          compressed.push(img);
+        }
+      }
+      dataCopy.personalInfo.profileImages = compressed;
     }
 
     // Compress project images if they're base64

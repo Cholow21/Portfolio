@@ -30,7 +30,8 @@ export default function App() {
       name: "Marshal Cholo Clemente",
       title: "BSIT Graduate",
       birthday: "September 21, 2004",
-      age: "21"
+      age: "21",
+      profileImages: [],
     },
     about: {
       paragraph1: "I'm a 4th-year BSIT student passionate about learning and growing through hands-on experience. I constantly strive to improve my skills and adapt to new challenges in the ever-evolving field of technology.",
@@ -173,6 +174,7 @@ export default function App() {
       <Header
         name={portfolioData.personalInfo?.name}
         profileImage={portfolioData.personalInfo?.profileImage}
+        profileImages={portfolioData.personalInfo?.profileImages || []}
         isDarkMode={isDarkMode}
         onToggleTheme={toggleTheme}
       />

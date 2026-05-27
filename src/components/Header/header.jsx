@@ -1,7 +1,7 @@
 import { useState } from "react";
-import wolfLogo from "../../assets/wolf.jpg";
+import ProfileSlideshow from "../ProfileSlideshow";
 
-export default function Header({ name = "Cholo Clemente", profileImage, isDarkMode, onToggleTheme }) {
+export default function Header({ name = "Cholo Clemente", profileImage, profileImages = [], isDarkMode, onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const items = [
@@ -46,20 +46,19 @@ export default function Header({ name = "Cholo Clemente", profileImage, isDarkMo
 
   return (
     <header
-      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl border-b transition-all duration-300"
+      className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl border-b transition-all duration-300 overflow-visible"
       style={{ background: "var(--bg)", borderColor: "var(--border)" }}
     >
-      <div className="flex justify-between items-center px-4 sm:px-8 lg:px-12 py-3 max-w-7xl mx-auto">
+      <div className="flex justify-between items-center px-4 sm:px-8 lg:px-12 py-3 max-w-7xl mx-auto overflow-visible">
         {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex items-center gap-3 group"
         >
-          <img
-            src={profileImage || wolfLogo}
-            alt="Logo"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover group-hover:scale-105 transition-transform duration-300"
-            style={{ border: "1px solid var(--border)" }}
+          <ProfileSlideshow
+            images={profileImages.length > 0 ? profileImages : (profileImage ? [profileImage] : [])}
+            size="sm"
+            interval={3500}
           />
           <span className="text-xs sm:text-sm font-mono tracking-widest uppercase hidden sm:block theme-text">
             {name.split(" ").slice(-1)[0]}
