@@ -1,60 +1,59 @@
+import { useScrollReveal } from "../../hooks/useScrollReveal";
+
 export default function Certifications({ data = [] }) {
+  const labelRef = useScrollReveal();
+  const headingRef = useScrollReveal();
+  const listRef = useScrollReveal();
+
   const defaultCertifications = [
-    {
-      id: 1,
-      title: "Microsoft Office Specialist (MOS)",
-      subtitle: "Microsoft Excel",
-      issuer: "Microsoft"
-    },
-    {
-      id: 2,
-      title: "Microsoft Office Specialist (MOS)",
-      subtitle: "Microsoft Access",
-      issuer: "Microsoft"
-    },
-    {
-      id: 3,
-      title: "Introduction to Cybersecurity",
-      subtitle: "Cybersecurity Fundamentals",
-      issuer: "Cisco"
-    }
+    { id: 1, title: "Microsoft Office Specialist (MOS)", subtitle: "Microsoft Excel", issuer: "Microsoft" },
+    { id: 2, title: "Microsoft Office Specialist (MOS)", subtitle: "Microsoft Access", issuer: "Microsoft" },
+    { id: 3, title: "Introduction to Cybersecurity", subtitle: "Cybersecurity Fundamentals", issuer: "Cisco" },
   ];
 
   const certifications = data && data.length > 0 ? data : defaultCertifications;
 
   return (
-    <section
-      id="certifications"
-      className="py-12 sm:py-16 lg:py-20 px-4 sm:px-5 text-center"
-    >
-      <div className="relative bg-white text-black rounded-lg shadow-2xl shadow-white/10 p-6 sm:p-8 lg:p-10 xl:p-12 max-w-6xl mx-auto hover:shadow-3xl hover:shadow-white/20 transform hover:-translate-y-2 transition-all duration-500 border border-gray-200">
-        <div className="relative z-10">
-          <div className="inline-block mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-black font-bold mb-2">
-              Certifications
-            </h1>
-            <div className="h-1 w-24 sm:w-32 bg-black rounded-full mx-auto"></div>
-          </div>
+    <section id="certifications" className="py-20 lg:py-32 px-6 sm:px-12 lg:px-24 theme-bg">
+      <div className="max-w-6xl mx-auto">
+        <div ref={labelRef} className="reveal flex items-center gap-3 mb-12">
+          <div className="w-8 h-px" style={{ background: "var(--border-hover)" }} />
+          <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+            04 — Certifications<span className="blink text-blue-500 ml-1">_</span>
+          </span>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {certifications.map((cert) => (
-              <div
-                key={cert.id}
-                className="group bg-gray-50 rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-200 text-left"
-              >
-                <h3 className="text-lg sm:text-xl font-bold text-black mb-2">
-                  {cert.title}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 mb-3">
-                  {cert.subtitle}
-                </p>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
-                  <span className="font-semibold">Issued by:</span>
-                  <span>{cert.issuer}</span>
-                </div>
+        <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-16">
+          My<br />Credentials
+        </h2>
+
+        <div ref={listRef} className="reveal delay-100">
+          {certifications.map((cert, idx) => (
+            <div key={cert.id}
+              className="group grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8 py-8 border-pulse transition-all duration-300"
+              style={{ borderTop: "1px solid var(--border)" }}
+            >
+              <div className="sm:col-span-1">
+                <span className="text-xs font-mono tracking-widest theme-muted">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
               </div>
-            ))}
-          </div>
+              <div className="sm:col-span-2">
+                <h3 className="text-base font-bold theme-text group-hover:text-blue-400 transition-colors duration-300">{cert.title}</h3>
+                <p className="theme-muted text-sm mt-1 font-mono">{cert.subtitle}</p>
+              </div>
+              <div className="sm:col-span-1 sm:text-right self-center">
+                <span className="text-xs font-mono px-3 py-1 theme-muted transition-all duration-300"
+                  style={{ border: "1px solid var(--border)" }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-hover)"}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+                >
+                  {cert.issuer}
+                </span>
+              </div>
+            </div>
+          ))}
+          <div style={{ borderTop: "1px solid var(--border)" }} />
         </div>
       </div>
     </section>

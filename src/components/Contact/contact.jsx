@@ -1,57 +1,66 @@
-import "./contact.css";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 export default function Contact({ data }) {
+  const labelRef = useScrollReveal();
+  const headingRef = useScrollReveal();
+  const listRef = useScrollReveal();
+  const footerRef = useScrollReveal();
+
   const contactInfo = [
-    { label: "Email", value: data.email, link: `mailto:${data.email}`, isClickable: true },
-    { label: "Instagram", value: data.instagram, link: `https://www.instagram.com/tiyolow/')}`, isClickable: true },
-    { label: "Facebook", value: data.facebook, link: "https://www.facebook.com/Cholo.Clemente21", isClickable: true },
-    { label: "Phone", value: data.phone, link: null, isClickable: false },
-    { label: "Address", value: data.address, link: null, isClickable: false },
+    { label: "Email", value: data?.email, link: `mailto:${data?.email}` },
+    { label: "Instagram", value: data?.instagram, link: `https://www.instagram.com/tiyolow/` },
+    { label: "Facebook", value: data?.facebook, link: "https://www.facebook.com/Cholo.Clemente21" },
+    { label: "Phone", value: data?.phone, link: null },
+    { label: "Address", value: data?.address, link: null },
   ];
 
   return (
-    <footer id="contact" className="relative py-12 sm:py-16 lg:py-20 px-4 sm:px-5 text-center overflow-hidden bg-black/90">
-      <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4">
-            Let's Connect
-          </h2>
-          <div className="h-1 w-24 sm:w-32 bg-white rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-400 text-sm sm:text-base lg:text-lg px-4">Feel free to reach out for collaborations or just a friendly chat!</p>
+    <footer id="contact" className="py-20 lg:py-32 px-6 sm:px-12 lg:px-24 theme-bg">
+      <div className="max-w-6xl mx-auto">
+        <div ref={labelRef} className="reveal flex items-center gap-3 mb-12">
+          <div className="w-8 h-px" style={{ background: "var(--border-hover)" }} />
+          <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+            05 — Contact<span className="blink text-blue-500 ml-1">_</span>
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 max-w-4xl mx-auto">
-          {contactInfo.map((item, index) => (
-            <div
-              key={index}
-              className={`group bg-white/5 backdrop-blur-md border border-white/10 rounded-lg p-4 sm:p-6 transition-all duration-300 ${
-                item.isClickable 
-                  ? 'hover:bg-white/10 hover:border-white/30 hover:shadow-2xl transform hover:-translate-y-2 cursor-pointer' 
-                  : 'cursor-default'
-              }`}
+        <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-16">
+          Let's<br />Connect
+        </h2>
+
+        <div ref={listRef} className="reveal delay-100 mb-20">
+          {contactInfo.map((item, idx) => (
+            <div key={idx}
+              className="group grid grid-cols-2 sm:grid-cols-4 gap-4 py-6 border-pulse transition-all duration-300"
+              style={{ borderTop: "1px solid var(--border)" }}
             >
-              {item.isClickable ? (
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block">
-                  <div className="text-gray-400 font-semibold text-xs sm:text-sm mb-2">{item.label}</div>
-                  <div className="text-white font-medium text-sm sm:text-base group-hover:text-gray-300 transition-colors duration-300 underline decoration-transparent group-hover:decoration-gray-300 break-words">
-                    {item.value}
-                  </div>
-                </a>
-              ) : (
-                <>
-                  <div className="text-gray-400 font-semibold text-xs sm:text-sm mb-2">{item.label}</div>
-                  <div className="text-white font-medium text-sm sm:text-base break-words">{item.value}</div>
-                </>
-              )}
+              <span className="text-xs font-mono tracking-widest uppercase theme-muted self-center">{item.label}</span>
+              <div className="sm:col-span-3 self-center">
+                {item.link ? (
+                  <a href={item.link} target="_blank" rel="noopener noreferrer"
+                    className="group/link inline-flex items-center gap-3 text-blue-500 font-semibold hover:text-blue-300 transition-colors duration-300"
+                  >
+                    <span className="relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-blue-400 after:transition-all after:duration-300 group-hover/link:after:w-full">
+                      {item.value}
+                    </span>
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">→</span>
+                  </a>
+                ) : (
+                  <span className="theme-text font-semibold">{item.value}</span>
+                )}
+              </div>
             </div>
           ))}
+          <div style={{ borderTop: "1px solid var(--border)" }} />
         </div>
 
-        {/* Footer bottom */}
-        <div className="pt-6 sm:pt-8 border-t border-white/10">
-          <p className="text-gray-500 text-xs sm:text-sm px-4">
-            © 2025 Marshal Cholo Clemente. All rights reserved
-          </p>
+        <div ref={footerRef} className="reveal flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-8"
+          style={{ borderTop: "1px solid var(--border)" }}>
+          <p className="theme-muted text-xs font-mono">© 2025 Marshal Cholo Clemente. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+            <p className="theme-muted text-xs font-mono">Available for opportunities</p>
+          </div>
         </div>
       </div>
     </footer>

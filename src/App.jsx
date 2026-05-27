@@ -11,6 +11,8 @@ import Beyond from "./components/Beyond/beyond";
 import Certifications from "./components/Certifications/Certifications";
 import Login from "./components/Admin/Login";
 import AdminPanel from "./components/Admin/AdminPanel";
+import Cursor from "./components/Cursor";
+import Marquee from "./components/Marquee";
 import { getPortfolioData, savePortfolioData } from "./firebase/portfolioService";
 
 export default function App() {
@@ -26,7 +28,7 @@ export default function App() {
   const [portfolioData, setPortfolioData] = useState({
     personalInfo: {
       name: "Marshal Cholo Clemente",
-      title: "4th-year BSIT Student",
+      title: "BSIT Graduate",
       birthday: "September 21, 2004",
       age: "21"
     },
@@ -162,26 +164,28 @@ export default function App() {
   };
 
   return (
-    <div className={isDarkMode ? "bg-gradient-to-b from-gray-900 to-black min-h-screen text-white" : "bg-gradient-to-b from-gray-50 to-white min-h-screen text-gray-900"}>
-      <Header 
-        name={portfolioData.personalInfo?.name} 
+    <div className={`bg-black min-h-screen text-white${isDarkMode ? "" : " light-mode"}`}>
+      {/* Live overlays */}
+      <Cursor isDarkMode={isDarkMode} />
+      <div className="scanlines" />
+      <div className="noise" />
+
+      <Header
+        name={portfolioData.personalInfo?.name}
         profileImage={portfolioData.personalInfo?.profileImage}
         isDarkMode={isDarkMode}
         onToggleTheme={toggleTheme}
       />
-      <Home personalInfo={portfolioData.personalInfo} isDarkMode={isDarkMode} />
+      <Home personalInfo={portfolioData.personalInfo} />
+      <Marquee skills={Object.values(portfolioData.skills).flat()} />
       <About data={portfolioData.about} />
+      <Marquee skills={Object.values(portfolioData.skills).flat()} />
       <Skills data={portfolioData.skills} />
-      <TechFeed isDarkMode={isDarkMode} />
-      
-      <section id="projects" className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-6 py-12 sm:py-16 lg:py-20 max-w-7xl mx-auto">
-        <Beyond isDarkMode={isDarkMode} />
-        <Projects data={portfolioData.projects} isDarkMode={isDarkMode} />
-      </section>
-
-      <Certifications data={portfolioData.certifications} isDarkMode={isDarkMode} />
- 
-      <Contact data={portfolioData.contact} isDarkMode={isDarkMode} />
+      <TechFeed />
+      <Beyond />
+      <Projects id="projects" data={portfolioData.projects} />
+      <Certifications data={portfolioData.certifications} />
+      <Contact data={portfolioData.contact} />
 
       {showLogin && !isAuthenticated && <Login onLogin={handleLogin} onClose={() => setShowLogin(false)} />}
       {showAdminPanel && isAuthenticated && (

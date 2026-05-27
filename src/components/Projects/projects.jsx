@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 import ch1 from "../../assets/CherryTomato/ch1.png";
 import ch2 from "../../assets/CherryTomato/ch2.png";
 import ch3 from "../../assets/CherryTomato/ch3.png";
@@ -7,7 +8,6 @@ import ch6 from "../../assets/CherryTomato/ch6.png";
 import ch7 from "../../assets/CherryTomato/ch7.png";
 import ch8 from "../../assets/CherryTomato/ch8.png";
 import ch9 from "../../assets/CherryTomato/ch9.png";
-
 import mz1 from "../../assets/Mezza/mz1.png";
 import mz2 from "../../assets/Mezza/mz2.png";
 import mz3 from "../../assets/Mezza/mz3.png";
@@ -15,390 +15,214 @@ import mz4 from "../../assets/Mezza/mz4.png";
 import mz5 from "../../assets/Mezza/mz5.png";
 import mz6 from "../../assets/Mezza/mz6.png";
 
-export default function Projects({ data = [] }) {
-    const [openModal, setOpenModal] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedProject, setSelectedProject] = useState(null);
-    const [currentPage, setCurrentPage] = useState(0);
+export default function Projects({ data = [], id }) {
+  const [openModal, setOpenModal] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
 
-    const cherryTomatoImages = [ch1, ch2, ch3, ch4, ch6, ch7, ch8, ch9];
-    const mezzaImages = [mz1, mz2, mz3, mz4, mz5, mz6];
+  const labelRef = useScrollReveal();
+  const headingRef = useScrollReveal();
+  const listRef = useScrollReveal();
 
-    // Built-in projects with images
-    const builtInProjects = {
-        cherry: {
-            id: 1,
-            name: "Cherry Tomato",
-            description: "Pomodoro Productivity App",
-            type: "Mobile Application",
-            images: cherryTomatoImages,
-            fullDescription: "Cherry Tomato is a productivity app that helps users manage their time using the Pomodoro technique. It supports task management, scheduling, and focus tracking through a clean and minimal interface.",
-            techStack: "Flutter, Dart",
-            teamSize: "5 Members",
-            role: "Developer",
-            features: [
-                "Add, edit, and categorize tasks",
-                "Pomodoro Timer with custom intervals",
-                "Schedule View and Statistics Dashboard",
-                "Smart alerts and notifications"
-            ]
-        },
-        mezza: {
-            id: 2,
-            name: "Mezza Residences",
-            description: "Real Estate Website",
-            type: "Website",
-            images: mezzaImages,
-            fullDescription: "Mezza Residences is a real estate website where users can explore building amenities, view rooms, and book units online. It offers a clean and interactive layout for an elegant property showcase.",
-            techStack: "HTML, CSS, JavaScript",
-            teamSize: "Solo Project",
-            role: "Web Developer",
-            features: [
-                "Online booking and inquiry form",
-                "Responsive design for all devices",
-                "Interactive gallery of amenities (gym, pool, bedrooms)",
-                "Elegant and modern UI/UX presentation"
-            ],
-            link: "/Mezza/index.html"
-        }
-    };
+  const cherryTomatoImages = [ch1, ch2, ch3, ch4, ch6, ch7, ch8, ch9];
+  const mezzaImages = [mz1, mz2, mz3, mz4, mz5, mz6];
 
-    useEffect(() => {
-        if (!openModal || !selectedProject?.images) return;
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => {
-                return (prev + 1) % selectedProject.images.length;
-            });
-        }, 3000);
-        return () => clearInterval(interval);
-    }, [openModal, selectedProject]);
+  const builtInProjects = {
+    cherry: {
+      id: 1, name: "Cherry Tomato", description: "Pomodoro Productivity App", type: "Mobile Application",
+      images: cherryTomatoImages,
+      fullDescription: "Cherry Tomato is a productivity app that helps users manage their time using the Pomodoro technique. It supports task management, scheduling, and focus tracking through a clean and minimal interface.",
+      techStack: "Flutter, Dart", teamSize: "5 Members", role: "Developer",
+      features: ["Add, edit, and categorize tasks", "Pomodoro Timer with custom intervals", "Schedule View and Statistics Dashboard", "Smart alerts and notifications"]
+    },
+    mezza: {
+      id: 2, name: "Mezza Residences", description: "Real Estate Website", type: "Website",
+      images: mezzaImages,
+      fullDescription: "Mezza Residences is a real estate website where users can explore building amenities, view rooms, and book units online.",
+      techStack: "HTML, CSS, JavaScript", teamSize: "Solo Project", role: "Web Developer",
+      features: ["Online booking and inquiry form", "Responsive design for all devices", "Interactive gallery of amenities", "Elegant and modern UI/UX presentation"],
+      link: "/Mezza/index.html"
+    }
+  };
 
-    const handleOpenProject = (projectKey) => {
-        setSelectedProject(builtInProjects[projectKey]);
-        setOpenModal(projectKey);
-        setCurrentIndex(0);
-    };
+  useEffect(() => {
+    if (!openModal || !selectedProject?.images) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % selectedProject.images.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [openModal, selectedProject]);
 
-    const handleOpenCustomProject = (project) => {
-        setSelectedProject(project);
-        setOpenModal(`custom-${project.id}`);
-    };
+  const allProjects = [
+    { key: "cherry", ...builtInProjects.cherry },
+    { key: "mezza", ...builtInProjects.mezza },
+    ...data.filter(p => p.id > 2).map(p => ({ key: `custom-${p.id}`, ...p }))
+  ];
 
-    // Combine all projects
-    const allProjects = [
-        { key: "cherry", ...builtInProjects.cherry },
-        { key: "mezza", ...builtInProjects.mezza },
-        ...data.filter(p => p.id > 2).map(p => ({ key: `custom-${p.id}`, ...p }))
-    ];
+  const projectsPerPage = 3;
+  const totalPages = Math.ceil(allProjects.length / projectsPerPage);
+  const currentProjects = allProjects.slice(currentPage * projectsPerPage, (currentPage + 1) * projectsPerPage);
 
-    // Pagination
-    const projectsPerPage = 2;
-    const totalPages = Math.ceil(allProjects.length / projectsPerPage);
-    const startIndex = currentPage * projectsPerPage;
-    const endIndex = startIndex + projectsPerPage;
-    const currentProjects = allProjects.slice(startIndex, endIndex);
+  const openProject = (project) => {
+    setSelectedProject(project);
+    setOpenModal(project.key);
+    setCurrentIndex(0);
+  };
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages - 1) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
+  return (
+    <>
+      <section id={id} className="py-20 lg:py-32 px-6 sm:px-12 lg:px-24 theme-bg">
+        <div className="max-w-6xl mx-auto">
+          <div ref={labelRef} className="reveal flex items-center gap-3 mb-10">
+            <div className="w-8 h-px" style={{ background: "var(--border-hover)" }} />
+            <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+              03 — Projects<span className="blink text-blue-500 ml-1">_</span>
+            </span>
+          </div>
 
-    const handlePrevPage = () => {
-        if (currentPage > 0) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+          <h2 ref={headingRef} className="reveal-right text-4xl sm:text-5xl font-black leading-none tracking-tighter theme-text mb-10">
+            My<br />Work
+          </h2>
 
-    return (
-        <>
-            <div className="flex-1 relative bg-white text-black p-6 sm:p-10 rounded-lg shadow-xl shadow-white/10 hover:shadow-2xl hover:shadow-white/20 transition-all duration-500 transform hover:-translate-y-2 border border-gray-200">
-                <div className="relative z-10">
-                    <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-black">
-                        My Projects
-                    </h2>
-
-                    {/* Projects Grid - 2 per page */}
-                    <div className="space-y-4 mb-6">
-                        {currentProjects.map((project) => (
-                            <div
-                                key={project.key}
-                                className="group bg-gray-50 border-2 border-gray-200 rounded-lg p-6 text-center shadow-md hover:shadow-xl cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:border-black"
-                                onClick={() => {
-                                    if (project.key === "cherry" || project.key === "mezza") {
-                                        handleOpenProject(project.key);
-                                    } else {
-                                        handleOpenCustomProject(project);
-                                    }
-                                }}
-                            >
-                                {project.imageUrl && (
-                                    <div className="w-full h-32 mb-4 rounded-lg overflow-hidden bg-gray-200">
-                                        <img
-                                            src={project.imageUrl}
-                                            alt={project.name}
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                e.target.style.display = 'none';
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                                <h3 className="font-bold text-black text-lg mb-2">
-                                    {project.name}
-                                </h3>
-                                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                                    {project.description}
-                                </p>
-                                <div className="inline-block px-3 py-1 bg-black text-white text-xs font-semibold rounded-md mb-2">
-                                    {project.type}
-                                </div>
-                                <p className="text-black text-sm font-medium flex items-center justify-center gap-2 group-hover:gap-3 transition-all duration-300">
-                                    View Details <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Pagination Controls */}
-                    {totalPages > 1 && (
-                        <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                            <button
-                                onClick={handlePrevPage}
-                                disabled={currentPage === 0}
-                                className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${
-                                    currentPage === 0
-                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                        : 'bg-black text-white hover:bg-gray-800'
-                                }`}
-                            >
-                                ← Previous
-                            </button>
-                            
-                            <div className="flex items-center gap-2">
-                                {Array.from({ length: totalPages }, (_, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setCurrentPage(i)}
-                                        className={`w-8 h-8 rounded-full font-medium transition-all duration-300 ${
-                                            currentPage === i
-                                                ? 'bg-black text-white'
-                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                        }`}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                ))}
-                            </div>
-
-                            <button
-                                onClick={handleNextPage}
-                                disabled={currentPage === totalPages - 1}
-                                className={`px-4 py-2 rounded-md font-medium transition-all duration-300 ${
-                                    currentPage === totalPages - 1
-                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                        : 'bg-black text-white hover:bg-gray-800'
-                                }`}
-                            >
-                                Next →
-                            </button>
-                        </div>
-                    )}
+          <div ref={listRef} className="reveal delay-100 space-y-0">
+            {currentProjects.map((project, idx) => (
+              <div
+                key={project.key}
+                onClick={() => openProject(project)}
+                className="group grid grid-cols-4 gap-4 py-6 cursor-pointer transition-all duration-300 border-pulse"
+                style={{ borderTop: "1px solid var(--border)" }}
+                onMouseEnter={e => e.currentTarget.style.borderTopColor = "var(--border-hover)"}
+                onMouseLeave={e => e.currentTarget.style.borderTopColor = "var(--border)"}
+              >
+                <div className="col-span-1">
+                  <span className="text-xs font-mono theme-muted">
+                    {String(idx + 1 + currentPage * projectsPerPage).padStart(2, "0")}
+                  </span>
                 </div>
+                <div className="col-span-2">
+                  <h3 className="font-bold theme-text text-base group-hover:text-blue-400 transition-colors duration-300">
+                    {project.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1 font-mono">{project.description}</p>
+                </div>
+                <div className="col-span-1 text-right self-center">
+                  <span className="text-xs font-mono border border-white/20 px-2 py-1 text-gray-500">
+                    {project.type}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div className="border-t border-white/10" />
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center gap-4 mt-8">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+                disabled={currentPage === 0}
+                className="text-xs font-mono tracking-widest uppercase text-blue-500 hover:text-blue-300 disabled:opacity-30 transition-colors duration-300"
+              >
+                ← Prev
+              </button>
+              <span className="text-xs font-mono text-gray-500">{currentPage + 1} / {totalPages}</span>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={currentPage === totalPages - 1}
+                className="text-xs font-mono tracking-widest uppercase text-blue-500 hover:text-blue-300 disabled:opacity-30 transition-colors duration-300"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Modal */}
+      {openModal && selectedProject && (
+        <div className="fixed inset-0 bg-black/95 flex justify-center items-center z-50 p-4" onClick={() => setOpenModal(null)}>
+          <div className="bg-black border border-white/20 text-white max-w-4xl w-full max-h-[90vh] overflow-y-auto relative" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center px-8 py-5 border-b border-white/10">
+              <div>
+                <h3 className="text-xl font-black tracking-tight text-white">{selectedProject.name}</h3>
+                <span className="text-xs font-mono text-gray-500">{selectedProject.type}</span>
+              </div>
+              <button
+                onClick={() => setOpenModal(null)}
+                className="text-xs font-mono tracking-widest uppercase border border-white/20 px-4 py-2 text-white hover:bg-white hover:text-black transition-all duration-300"
+              >
+                Close
+              </button>
             </div>
 
-            {/* Project Modal */}
-            {openModal && selectedProject && (openModal === "cherry" || openModal === "mezza") && (
-                <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 p-4" onClick={() => setOpenModal(null)}>
-                    <div className="bg-white text-black rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8 pt-16 relative border border-gray-200" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            onClick={() => setOpenModal(null)}
-                            className="absolute top-4 right-4 z-[60] text-white bg-black px-4 py-2 rounded-md hover:bg-gray-800 transition font-bold shadow-xl"
-                        >
-                            ✕
-                        </button>
-
-                        {selectedProject.images && (
-                            <>
-                                <div className="relative w-full h-80 overflow-hidden rounded-lg mb-6 shadow-md bg-gray-100">
-                                    <img
-                                        src={selectedProject.images[currentIndex]}
-                                        alt={`${selectedProject.name} ${currentIndex + 1}`}
-                                        className="w-full h-full object-contain transition-opacity duration-700 ease-in-out"
-                                    />
-                                    <button
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 p-3 rounded-md hover:bg-black hover:text-white transition border border-gray-200"
-                                        onClick={() =>
-                                            setCurrentIndex(
-                                                (prev) =>
-                                                    (prev - 1 + selectedProject.images.length) %
-                                                    selectedProject.images.length
-                                            )
-                                        }
-                                    >
-                                        ◀
-                                    </button>
-                                    <button
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 p-3 rounded-md hover:bg-black hover:text-white transition border border-gray-200"
-                                        onClick={() =>
-                                            setCurrentIndex(
-                                                (prev) => (prev + 1) % selectedProject.images.length
-                                            )
-                                        }
-                                    >
-                                        ▶
-                                    </button>
-                                </div>
-
-                                <div className="flex justify-center gap-2 mb-6">
-                                    {selectedProject.images.map((_, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setCurrentIndex(i)}
-                                            className={`w-3 h-3 rounded-full transition-all ${
-                                                i === currentIndex ? "bg-black w-8" : "bg-gray-300"
-                                            }`}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-
-                        <h3 className="text-2xl font-bold mb-4 text-center">
-                            {selectedProject.name}
-                        </h3>
-
-                        {selectedProject.techStack && (
-                            <p className="text-sm mb-4 text-center text-gray-600">
-                                Type: {selectedProject.type} | Tech Stack: {selectedProject.techStack} <br />
-                                Team Size: {selectedProject.teamSize} | Role: {selectedProject.role}
-                            </p>
-                        )}
-
-                        <p className="mb-6 text-gray-700 leading-relaxed text-justify">
-                            {selectedProject.fullDescription || selectedProject.description}
-                        </p>
-
-                        {selectedProject.link && (
-                            <a
-                                href={selectedProject.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-block mt-4 bg-black text-white font-semibold px-6 py-3 rounded-md shadow-md hover:bg-gray-800 hover:shadow-lg transition-all duration-300"
-                            >
-                                View Website
-                            </a>
-                        )}
-
-                        {selectedProject.features && (
-                            <>
-                                <h3 className="text-xl font-bold mb-3 mt-6">Key Features</h3>
-                                <ul className="list-disc list-inside text-left text-gray-700 space-y-1 mb-6">
-                                    {selectedProject.features.map((feature, idx) => (
-                                        <li key={idx}>{feature}</li>
-                                    ))}
-                                </ul>
-                            </>
-                        )}
-                    </div>
+            <div className="p-8">
+              {selectedProject.images && (
+                <div className="mb-8">
+                  <div className="relative w-full h-72 bg-white/5 overflow-hidden">
+                    <img src={selectedProject.images[currentIndex]} alt={selectedProject.name} className="w-full h-full object-contain" />
+                    <button
+                      className="absolute left-3 top-1/2 -translate-y-1/2 bg-black border border-white/20 w-10 h-10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 text-sm"
+                      onClick={() => setCurrentIndex(p => (p - 1 + selectedProject.images.length) % selectedProject.images.length)}
+                    >←</button>
+                    <button
+                      className="absolute right-3 top-1/2 -translate-y-1/2 bg-black border border-white/20 w-10 h-10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 text-sm"
+                      onClick={() => setCurrentIndex(p => (p + 1) % selectedProject.images.length)}
+                    >→</button>
+                  </div>
+                  <div className="flex gap-1 mt-3">
+                    {selectedProject.images.map((_, i) => (
+                      <button key={i} onClick={() => setCurrentIndex(i)}
+                        className={`h-0.5 transition-all duration-300 ${i === currentIndex ? "bg-white flex-1" : "bg-white/20 w-4"}`}
+                      />
+                    ))}
+                  </div>
                 </div>
-            )}
+              )}
 
-            {/* Custom Project Modal */}
-            {openModal && selectedProject && openModal.startsWith('custom-') && (
-                <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 p-4" onClick={() => setOpenModal(null)}>
-                    <div className="bg-white text-black rounded-lg shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8 pt-16 relative border border-gray-200" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            onClick={() => setOpenModal(null)}
-                            className="absolute top-4 right-4 z-[60] text-white bg-black px-4 py-2 rounded-md hover:bg-gray-800 transition font-bold shadow-xl"
-                        >
-                            ✕
-                        </button>
-
-                        {/* Project Image */}
-                        {selectedProject.imageUrl && (
-                            <div className="w-full h-64 mb-6 rounded-lg overflow-hidden bg-gray-100">
-                                <img
-                                    src={selectedProject.imageUrl}
-                                    alt={selectedProject.name}
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                        e.target.parentElement.style.display = 'none';
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        <div className="text-center mb-6">
-                            <h3 className="text-3xl font-bold mb-2">
-                                {selectedProject.name}
-                            </h3>
-                            <div className="inline-block px-4 py-2 bg-black text-white text-sm font-semibold rounded-md">
-                                {selectedProject.type}
-                            </div>
-                        </div>
-
-                        {/* Project Details */}
-                        {(selectedProject.techStack || selectedProject.teamSize || selectedProject.role) && (
-                            <div className="bg-gray-50 rounded-lg p-4 mb-4 border border-gray-200">
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                                    {selectedProject.techStack && (
-                                        <div>
-                                            <span className="font-bold text-gray-700">Tech Stack:</span>
-                                            <p className="text-gray-600">{selectedProject.techStack}</p>
-                                        </div>
-                                    )}
-                                    {selectedProject.teamSize && (
-                                        <div>
-                                            <span className="font-bold text-gray-700">Team Size:</span>
-                                            <p className="text-gray-600">{selectedProject.teamSize}</p>
-                                        </div>
-                                    )}
-                                    {selectedProject.role && (
-                                        <div>
-                                            <span className="font-bold text-gray-700">Role:</span>
-                                            <p className="text-gray-600">{selectedProject.role}</p>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="space-y-4">
-                            <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                                <h4 className="font-bold text-lg mb-2 text-black">Description</h4>
-                                <p className="text-gray-700 leading-relaxed">
-                                    {selectedProject.description}
-                                </p>
-                            </div>
-
-                            {selectedProject.features && selectedProject.features.length > 0 && (
-                                <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                                    <h4 className="font-bold text-lg mb-3 text-black">Key Features</h4>
-                                    <ul className="list-disc list-inside text-gray-700 space-y-1">
-                                        {selectedProject.features.map((feature, idx) => (
-                                            <li key={idx}>{feature}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            {selectedProject.link && (
-                                <div className="text-center">
-                                    <a
-                                        href={selectedProject.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-block bg-black text-white font-semibold px-6 py-3 rounded-md shadow-md hover:bg-gray-800 hover:shadow-lg transition-all duration-300"
-                                    >
-                                        Visit Project →
-                                    </a>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+              {selectedProject.imageUrl && !selectedProject.images && (
+                <div className="w-full h-56 bg-white/5 overflow-hidden mb-8">
+                  <img src={selectedProject.imageUrl} alt={selectedProject.name} className="w-full h-full object-cover" />
                 </div>
-            )}
-        </>
-    );
+              )}
+
+              {(selectedProject.techStack || selectedProject.teamSize || selectedProject.role) && (
+                <div className="grid grid-cols-3 gap-4 py-6 border-t border-b border-white/10 mb-6">
+                  {[["Tech Stack", selectedProject.techStack], ["Team", selectedProject.teamSize], ["Role", selectedProject.role]].map(([k, v]) => v && (
+                    <div key={k}>
+                      <p className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-1">{k}</p>
+                      <p className="text-sm font-semibold text-white">{v}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <p className="text-gray-400 leading-relaxed mb-6 text-sm">
+                {selectedProject.fullDescription || selectedProject.description}
+              </p>
+
+              {selectedProject.features && (
+                <div className="mb-6">
+                  <p className="text-xs font-mono tracking-widest uppercase text-gray-500 mb-3">Key Features</p>
+                  <ul className="space-y-2">
+                    {selectedProject.features.map((f, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm text-gray-400">
+                        <span className="text-white mt-0.5">—</span>{f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selectedProject.link && (
+                <a href={selectedProject.link} target="_blank" rel="noopener noreferrer"
+                  className="inline-block text-xs font-mono tracking-widest uppercase border border-blue-500 text-blue-500 px-6 py-3 hover:bg-blue-500 hover:text-white transition-all duration-300">
+                  Visit Project →
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

@@ -1,46 +1,48 @@
-import React from "react";
-
-export function SkillPill({ skill }) {
-  return (
-    <span className="px-4 sm:px-6 py-2 sm:py-3 bg-black text-white font-medium rounded-md shadow-md hover:bg-white hover:text-black hover:shadow-lg border border-black hover:scale-105 transition-all duration-300 cursor-pointer text-sm sm:text-base">
-      {skill}
-    </span>
-  );
-}
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 export default function Skills({ data }) {
+  const labelRef = useScrollReveal();
+  const headingRef = useScrollReveal();
+
   return (
-    <section
-      id="skills"
-      className="py-12 sm:py-16 lg:py-20 px-4 sm:px-5 text-center"
-    >
-      <div className="relative bg-white text-black rounded-lg shadow-2xl shadow-white/10 p-6 sm:p-8 lg:p-10 xl:p-12 max-w-6xl mx-auto hover:shadow-3xl hover:shadow-white/20 transform hover:-translate-y-2 transition-all duration-500 border border-gray-200">
-        <div className="relative z-10">
-          <div className="inline-block mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-black font-bold mb-2">
-              Skills & Technologies
-            </h1>
-            <div className="h-1 w-24 sm:w-32 bg-black rounded-full mx-auto"></div>
-          </div>
-          
-          <div className="space-y-8 sm:space-y-12">
-            {Object.entries(data).map(([category, skills], idx) => (
-              <div 
-                key={category}
-                className="group"
-                style={{ animationDelay: `${idx * 100}ms` }}
-              >
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-black mb-4 sm:mb-6">
-                  {category}
-                </h2>
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 lg:gap-4">
-                  {skills.map((skill, i) => (
-                    <SkillPill key={i} skill={skill} />
-                  ))}
-                </div>
+    <section id="skills" className="py-20 lg:py-32 px-6 sm:px-12 lg:px-24 theme-bg">
+      <div className="max-w-6xl mx-auto">
+        <div ref={labelRef} className="reveal flex items-center gap-3 mb-12">
+          <div className="w-8 h-px" style={{ background: "var(--border-hover)" }} />
+          <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+            02 — Skills<span className="blink text-blue-500 ml-1">_</span>
+          </span>
+        </div>
+
+        <h2 ref={headingRef} className="reveal-left text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter theme-text mb-16">
+          Tech<br />Stack
+        </h2>
+
+        <div>
+          {Object.entries(data).map(([category, skills], idx) => (
+            <div key={category} className="group grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-8 py-8 border-pulse transition-all duration-300"
+              style={{ borderTop: "1px solid var(--border)" }}>
+              <div className="sm:col-span-1">
+                <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <p className="font-bold mt-1 theme-text group-hover:text-blue-400 transition-colors duration-300">{category}</p>
               </div>
-            ))}
-          </div>
+              <div className="sm:col-span-3 flex flex-wrap gap-2">
+                {skills.map((skill) => (
+                  <span key={skill}
+                    className="group/pill relative px-4 py-2 text-sm font-mono theme-muted overflow-hidden cursor-default transition-all duration-200 hover:theme-text"
+                    style={{ border: "1px solid var(--border)" }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-hover)"; e.currentTarget.style.color = "var(--text)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-muted)"; }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div style={{ borderTop: "1px solid var(--border)" }} />
         </div>
       </div>
     </section>

@@ -1,25 +1,54 @@
-import React from "react";
+import { useScrollReveal } from "../../hooks/useScrollReveal";
 
 export default function Beyond() {
+  const labelRef = useScrollReveal();
+  const headingRef = useScrollReveal();
+  const textRef = useScrollReveal();
+  const tagsRef = useScrollReveal();
+
   return (
-    <div className="group relative bg-white text-black p-8 sm:p-10 rounded-lg shadow-xl shadow-white/10 hover:shadow-2xl hover:shadow-white/20 w-full lg:w-1/2 transform hover:-translate-y-2 transition-all duration-500 border border-gray-200">
-      <div className="relative z-10">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-          Beyond Coding
+    <section className="py-20 lg:py-32 px-6 sm:px-12 lg:px-24 theme-bg">
+      <div className="max-w-6xl mx-auto">
+        <div ref={labelRef} className="reveal flex items-center gap-3 mb-10">
+          <div className="w-8 h-px" style={{ background: "var(--border-hover)" }} />
+          <span className="text-xs font-mono tracking-widest uppercase theme-muted">
+            Beyond Coding<span className="blink text-blue-500 ml-1">_</span>
+          </span>
+        </div>
+
+        <h2 ref={headingRef} className="reveal-left text-3xl sm:text-4xl font-black leading-tight tracking-tighter theme-text mb-8">
+          Life Outside<br />the Screen
         </h2>
-        
-        <div className="space-y-3 sm:space-y-4">
-          <p className="text-sm sm:text-base lg:text-lg leading-relaxed text-gray-700 hover:text-black transition-colors duration-300">
-            When I'm not writing code, I enjoy being outside doing side quests —
-            whether it's <span className="font-semibold text-black">hiking, biking</span>, or just exploring new places.
-          </p>
-          <p className="text-base sm:text-lg leading-relaxed text-gray-700 hover:text-black transition-colors duration-300">
-            I believe life outside the screen sparks creativity inside it. Those
-            small adventures help me bring <span className="font-semibold text-black">fresh energy and perspective</span> into every
-            project I build.
-          </p>
+
+        <div className="w-full h-px mb-8"
+          style={{ background: "linear-gradient(to right, var(--border-hover), rgba(59,130,246,0.2), transparent)" }} />
+
+        <div ref={textRef} className="reveal space-y-4 delay-100 max-w-2xl">
+          {[
+            <>When I'm not writing code, I enjoy being outside — whether it's <strong className="theme-text">hiking, biking</strong>, or just exploring new places.</>,
+            <>Those adventures help me bring <strong className="theme-text">fresh energy and perspective</strong> into every project I build.</>
+          ].map((content, i) => (
+            <p key={i} className="theme-body text-sm leading-relaxed pl-4 transition-colors duration-300"
+              style={{ borderLeft: "2px solid var(--border)" }}
+              onMouseEnter={e => e.currentTarget.style.borderLeftColor = "#3b82f6"}
+              onMouseLeave={e => e.currentTarget.style.borderLeftColor = "var(--border)"}
+            >{content}</p>
+          ))}
+        </div>
+
+        <div ref={tagsRef} className="reveal delay-200 mt-10 flex flex-wrap gap-2">
+          {["Hiking", "Biking", "Gaming", "Exploring"].map((tag) => (
+            <span key={tag}
+              className="group/tag relative text-xs font-mono px-4 py-2 theme-muted overflow-hidden cursor-default transition-all duration-300"
+              style={{ border: "1px solid var(--border)" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-hover)"; e.currentTarget.style.color = "var(--text)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-muted)"; }}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

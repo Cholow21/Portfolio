@@ -7,73 +7,67 @@ export default function Login({ onLogin, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simple authentication (in production, use proper backend authentication)
     if (username === "admin" && password === "cholotheadmin") {
       onLogin();
       setError("");
     } else {
-      setError("Invalid credentials");
+      setError("Invalid credentials. Please try again.");
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/90 flex justify-center items-center z-[100] p-4">
-      <div className="bg-white text-black rounded-lg shadow-2xl max-w-md w-full p-8 border border-gray-200 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-black text-2xl font-bold transition-colors duration-300"
-        >
-          ✕
-        </button>
-        
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl">!</span>
-          </div>
-          <h2 className="text-3xl font-bold mb-2">Login as Admin</h2>
-          <p className="text-gray-600 text-sm">Access the admin panel to edit your portfolio</p>
-        </div>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="fixed inset-0 bg-black/95 flex justify-center items-center z-[100] p-4">
+      <div className="bg-white text-black max-w-sm w-full relative">
+        {/* Header bar */}
+        <div className="flex justify-between items-center px-8 py-5 border-b border-black/10">
           <div>
-            <label className="block text-sm font-semibold mb-2">Username</label>
+            <h2 className="text-lg font-black tracking-tight">Admin Login</h2>
+            <p className="text-xs font-mono text-gray-400 mt-0.5">Portfolio management</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-xs font-mono tracking-widest uppercase border border-black/20 px-3 py-1.5 hover:bg-black hover:text-white transition-all duration-300"
+          >
+            Close
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-8 space-y-5">
+          <div>
+            <label className="block text-xs font-mono tracking-widest uppercase text-gray-400 mb-2">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-black"
+              className="w-full px-4 py-3 border border-black/20 text-sm focus:outline-none focus:border-black transition-colors duration-300 font-mono"
               placeholder="Enter username"
               required
             />
           </div>
-          
+
           <div>
-            <label className="block text-sm font-semibold mb-2">Password</label>
+            <label className="block text-xs font-mono tracking-widest uppercase text-gray-400 mb-2">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-black"
+              className="w-full px-4 py-3 border border-black/20 text-sm focus:outline-none focus:border-black transition-colors duration-300 font-mono"
               placeholder="Enter password"
               required
             />
           </div>
 
           {error && (
-            <div className="bg-red-50 text-red-600 px-4 py-2 rounded-md text-sm border border-red-200">
-              {error}
-            </div>
+            <p className="text-xs font-mono text-red-600 border border-red-200 bg-red-50 px-4 py-2">{error}</p>
           )}
 
           <button
             type="submit"
-            className="w-full bg-black text-white font-semibold py-3 rounded-md hover:bg-gray-800 transition-all duration-300"
+            className="w-full bg-black text-white text-xs font-mono tracking-widest uppercase py-4 hover:bg-gray-900 transition-all duration-300"
           >
-            Login to Admin Panel
+            Login →
           </button>
         </form>
-
-        
       </div>
     </div>
   );
